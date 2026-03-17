@@ -1,0 +1,421 @@
+:root {
+  --bg-gradient-start: #fef7d8;
+  --bg-gradient-end: #def0ff;
+  --bg-orb-1: #fff7c6;
+  --bg-orb-2: #ffdcba;
+  --card-bg: #ffffffd6;
+  --card-border: #1f6f86;
+  --card-shadow: #0a2a3f2a;
+  --text: #11293b;
+  --muted-text: #154c63;
+  --accent: #1f6f86;
+  --accent-strong: #16495a;
+  --button-primary: linear-gradient(180deg, #38a7dd, #16739a);
+  --button-secondary-bg: #ffffff;
+  --button-secondary-text: #1b3b4f;
+  --button-border: #2b9cc8;
+  --button-shadow: #0e5f8a3d;
+  --button-focus: #134353;
+  --message: #0f4458;
+  --panel-bg: #ffffffdd;
+}
+
+:root.theme-dark {
+  --bg-gradient-start: #081926;
+  --bg-gradient-end: #0d2f47;
+  --bg-orb-1: #0d3558;
+  --bg-orb-2: #102f4a;
+  --card-bg: #10243fdd;
+  --card-border: #4eb3e0;
+  --card-shadow: #01111f7d;
+  --text: #ecf4ff;
+  --muted-text: #9cd4ff;
+  --accent: #6ec3ff;
+  --accent-strong: #9ad8ff;
+  --button-primary: linear-gradient(180deg, #2d7eaa, #1c5a78);
+  --button-secondary-bg: #1a334e;
+  --button-secondary-text: #dcecff;
+  --button-border: #5bb4e7;
+  --button-shadow: #000f1f66;
+  --button-focus: #2fa4dd;
+  --message: #a3ddff;
+  --panel-bg: #0d2d4ed8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.2rem;
+  background:
+    radial-gradient(circle at 20% 20%, var(--bg-orb-1) 0 18%, transparent 18%),
+    radial-gradient(circle at 80% 0%, var(--bg-orb-2) 0 14%, transparent 14%),
+    linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  color: var(--text);
+  font-family: "Trebuchet MS", "Gill Sans", "Avenir", "Helvetica Neue", Arial, sans-serif;
+}
+
+.game-shell {
+  width: min(100%, 980px);
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  text-align: center;
+  position: relative;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  border-radius: 1.6rem;
+  border: 1px solid color-mix(in oklab, var(--card-border), transparent 35%);
+  background: linear-gradient(160deg, var(--panel-bg), #ffffff1f);
+  box-shadow: 0 16px 40px #041a2d33;
+  overflow: hidden;
+}
+
+.game-shell::after {
+  content: "";
+  position: absolute;
+  inset: -22% auto auto -12%;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in oklab, var(--accent), transparent 60%) 0, transparent 68%);
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.game-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.8vw, 3rem);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  font-weight: 800;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.2em;
+}
+
+.wordmark-primary {
+  color: var(--text);
+}
+
+.wordmark-secondary {
+  color: var(--accent-strong);
+}
+
+.subtitle {
+  margin: 0.2rem 0 0;
+  color: var(--muted-text);
+  font-size: clamp(0.88rem, 2.2vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.topbar {
+  width: min(100%, 980px);
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+}
+
+.start-actions {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.screen {
+  width: min(100%, 760px);
+  display: none;
+  justify-items: center;
+  gap: 1.1rem;
+}
+
+.screen.active {
+  display: grid;
+}
+
+.timer-card {
+  width: min(100%, 320px);
+  padding: 0.55rem 0.9rem;
+  border-radius: 1rem;
+  border: 2px solid color-mix(in oklab, var(--card-border), transparent 50%);
+  background: #ffffffbb;
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+}
+
+:root.theme-dark .timer-card {
+  background: #0d2b49bb;
+}
+
+.timer-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted-text);
+}
+
+.time-display {
+  font-weight: 800;
+  font-size: clamp(3rem, 12vw, 5.8rem);
+  line-height: 1;
+  letter-spacing: 0.05em;
+  color: var(--accent-strong);
+  min-height: 1.2em;
+}
+
+.prompt-grid {
+  width: 100%;
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 1fr;
+}
+
+.prompt-card {
+  position: relative;
+  border: 2px solid color-mix(in oklab, var(--card-border), transparent 40%);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, var(--card-bg), color-mix(in oklab, var(--card-bg), #ffffff 15%));
+  padding: 0.9rem;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 12px 24px var(--card-shadow);
+  min-height: 8.2rem;
+  display: grid;
+  align-items: center;
+}
+
+.prompt-card::after {
+  content: "";
+  position: absolute;
+  inset: 0.45rem;
+  border-radius: 0.75rem;
+  border: 1px dashed color-mix(in oklab, var(--accent), transparent 70%);
+  pointer-events: none;
+}
+
+.prompt-text {
+  margin: 0;
+  min-height: 2.8em;
+  font-size: clamp(1.22rem, 5vw, 2rem);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+#settings-title {
+  margin: 0;
+}
+
+.settings-block {
+  width: min(100%, 700px);
+  display: grid;
+  gap: 0.45rem;
+  text-align: left;
+  justify-items: start;
+  border: 1px solid color-mix(in oklab, var(--card-border), transparent 35%);
+  border-radius: 0.9rem;
+  padding: 0.75rem;
+  background: color-mix(in oklab, var(--card-bg), transparent 30%);
+}
+
+.settings-subtitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.settings-block label {
+  font-weight: 700;
+}
+
+.settings-block select,
+.settings-block input {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  font: inherit;
+  border-radius: 0.65rem;
+  border: 2px solid color-mix(in oklab, var(--button-border), transparent 25%);
+  background: #fff;
+  color: var(--text);
+}
+
+:root.theme-dark .settings-block select,
+:root.theme-dark .settings-block input {
+  background: #16324b;
+  color: #eaf2ff;
+}
+
+.prompt-add-row {
+  width: 100%;
+  display: flex;
+  gap: 0.55rem;
+}
+
+.prompt-add-row input {
+  min-width: 0;
+  flex: 1;
+}
+
+.prompt-list {
+  width: 100%;
+  max-height: 11rem;
+  overflow: auto;
+  padding: 0.35rem;
+  display: grid;
+  gap: 0.45rem;
+  border: 1px dashed color-mix(in oklab, var(--card-border), transparent 50%);
+  border-radius: 0.65rem;
+  background: color-mix(in oklab, var(--panel-bg), #ffffff 15%);
+}
+
+.prompt-item {
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid color-mix(in oklab, var(--card-border), transparent 60%);
+  border-radius: 0.55rem;
+  padding: 0.45rem 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: color-mix(in oklab, var(--card-bg), #ffffff 10%);
+  min-height: 2.9rem;
+  line-height: 1.25;
+}
+
+.prompt-item input {
+  accent-color: var(--accent);
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.prompt-gallery {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.prompt-gallery .prompt-item {
+  background: color-mix(in oklab, var(--card-bg), #ffffff 12%);
+}
+
+@media (min-width: 680px) {
+  .prompt-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 980px) {
+  .prompt-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  outline: 3px solid var(--button-focus);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--button-primary);
+  color: #fefefe;
+  padding: 0.9rem 1.55rem;
+  font-size: clamp(1rem, 3vw, 1.45rem);
+  min-width: 12.5rem;
+  box-shadow: 0 12px 24px var(--button-shadow);
+  border: 1px solid color-mix(in oklab, var(--card-border), #000 20%);
+}
+
+.btn-secondary {
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 2px solid var(--button-border);
+  padding: 0.64rem 1.1rem;
+  font-size: clamp(0.9rem, 3vw, 1.05rem);
+}
+
+.btn-tertiary {
+  background: color-mix(in oklab, var(--card-bg), transparent 35%);
+  color: var(--muted-text);
+  border: 2px solid color-mix(in oklab, var(--accent), transparent 40%);
+  padding: 0.42rem 0.86rem;
+  font-size: 0.9rem;
+}
+
+.finished-message {
+  margin: 0;
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  font-weight: 800;
+  color: var(--message);
+}
+
+@media (min-width: 760px) {
+  .timer-card {
+    margin-top: 0.2rem;
+  }
+
+  .prompt-grid {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+  }
+
+  .prompt-card {
+    text-align: left;
+    align-self: stretch;
+  }
+
+  .prompt-card::after {
+    inset: 0.45rem;
+  }
+
+  .prompt-text {
+    min-height: 3.2em;
+  }
+}
+
+@media (min-width: 1100px) {
+  .game-shell {
+    gap: 1.4rem;
+  }
+
+  .prompt-card {
+    border-radius: 1.1rem;
+    min-height: 9rem;
+  }
+}
