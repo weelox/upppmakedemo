@@ -343,23 +343,13 @@ const customPrompts = loadCustomPrompts();
 function loadCustomPrompts() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return clone(startDefaults);
-    const parsed = JSON.parse(raw);
+    const rawBackup = localStorage.getItem(LOCAL_BACKUP_KEY);
 
-    const sanitized = {
-      sv: {
-        category1: ensureArray(parsed?.sv?.category1),
-        category2: ensureArray(parsed?.sv?.category2),
-        category3: ensureArray(parsed?.sv?.category3)
-      },
-      en: {
-        category1: ensureArray(parsed?.en?.category1),
-        category2: ensureArray(parsed?.en?.category2),
-        category3: ensureArray(parsed?.en?.category3)
-      }
-    };
+    const customData = normalizePromptStore(raw ? JSON.parse(raw) : null);
+    const backupData = parseBackupSnapshot(rawBackup);
+    const combined = combinePromptStores(customData, backupData);
 
-    return sanitized;
+    return combined;
   } catch {
     return clone(startDefaults);
   }
@@ -371,6 +361,46 @@ function saveCustomPrompts() {
 
 function ensureArray(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string" && item.trim()) : [];
+}
+
+function normalizePromptStore(parsed) {
+  if (!parsed) {
+    return clone(startDefaults);
+  }
+
+  const direct = parsed.prompts ? parsed.prompts : parsed;
+  return {
+    sv: {
+      category1: ensureArray(direct?.sv?.category1),
+      category2: ensureArray(direct?.sv?.category2),
+      category3: ensureArray(direct?.sv?.category3)
+    },
+    en: {
+      category1: ensureArray(direct?.en?.category1),
+      category2: ensureArray(direct?.en?.category2),
+      category3: ensureArray(direct?.en?.category3)
+    }
+  };
+}
+
+function combinePromptStores(primary, fallback) {
+  const merged = clone(startDefaults);
+  ["sv", "en"].forEach((language) => {
+    ["category1", "category2", "category3"].forEach((category) => {
+      const set = new Set([
+        ...ensureArray(primary?.[language]?.[category]),
+        ...ensureArray(fallback?.[language]?.[category])
+      ]);
+      merged[language][category] = Array.from(set);
+    });
+  });
+  return merged;
+}
+
+function parseBackupSnapshot(raw) {
+  if (!raw) return null;
+  const parsed = JSON.parse(raw);
+  return parsed?.prompts ? normalizePromptStore(parsed.prompts) : normalizePromptStore(parsed);
 }
 
 function initTheme() {
