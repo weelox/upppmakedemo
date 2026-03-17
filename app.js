@@ -338,7 +338,7 @@ function clone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 
-const customPrompts = loadCustomPrompts();
+let customPrompts = loadCustomPrompts();
 
 function loadCustomPrompts() {
   try {
@@ -353,6 +353,10 @@ function loadCustomPrompts() {
   } catch {
     return clone(startDefaults);
   }
+}
+
+function reloadCustomPrompts() {
+  customPrompts = loadCustomPrompts();
 }
 
 function saveCustomPrompts() {
@@ -464,10 +468,12 @@ function showScreen(screen) {
   if (screen === "start") {
     screenStart.classList.add("active");
   } else if (screen === "play") {
+    reloadCustomPrompts();
     screenPlay.classList.add("active");
   } else if (screen === "finished") {
     screenFinished.classList.add("active");
   } else if (screen === "settings") {
+    reloadCustomPrompts();
     screenSettings.classList.add("active");
     activeSettingsCategory = settingsCategorySelect.value;
     generatedPromptsByCategory[activeSettingsCategory] = [];
@@ -502,6 +508,7 @@ function startTimer() {
 }
 
 function startRound() {
+  reloadCustomPrompts();
   pickPrompts();
   showScreen("play");
   startTimer();
