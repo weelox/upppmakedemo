@@ -61,6 +61,7 @@
             <option value="category2">Kategori 2</option>
             <option value="category3">Kategori 3</option>
           </select>
+          <p id="settings-category-count" class="settings-count" aria-live="polite"></p>
         </div>
 
         <div class="settings-block">
@@ -92,6 +93,11 @@
           </div>
           <textarea id="backupPayloadInput" class="backup-textarea" rows="4" placeholder="Din delningskod visas här" aria-label="Dela-kod"></textarea>
           <p id="backupStatus" class="backup-status"></p>
+        </div>
+
+        <div class="settings-block">
+          <p id="settings-reset-title" class="settings-subtitle">Återställ prompts</p>
+          <button id="resetPromptsBtn" class="btn btn-tertiary" type="button">Återställ till grundinställningar</button>
         </div>
 
         <button id="closeSettingsBtn" class="btn btn-primary" type="button">Tillbaka</button>

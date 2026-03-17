@@ -200,8 +200,8 @@ const promptSources = {
 
 const generatedPromptCount = 10;
 const STORAGE_KEY = "sketchCustomPrompts";
-const LOCAL_BACKUP_KEY = "sketchLocalPromptBackup";
 const BACKUP_CODE = "sketch4life";
+const MAX_CUSTOM_PROMPTS_PER_CATEGORY = 400;
 
 const ROUND_SECONDS = 120;
 
@@ -239,12 +239,15 @@ const saveLocalBtn = document.getElementById("saveLocalBtn");
 const saveAllBtn = document.getElementById("saveAllBtn");
 const backupPayloadInput = document.getElementById("backupPayloadInput");
 const backupStatus = document.getElementById("backupStatus");
+const settingsCategoryCount = document.getElementById("settings-category-count");
+const resetPromptsBtn = document.getElementById("resetPromptsBtn");
 
 const settingsTitle = document.getElementById("settings-title");
 const settingsCategoryLabel = document.getElementById("settings-category-label");
 const manualLabel = document.getElementById("manual-label");
 const settingsGenerateTitle = document.getElementById("settings-generate-title");
 const settingsCustomTitle = document.getElementById("settings-custom-title");
+const settingsResetTitle = document.getElementById("settings-reset-title");
 
 const i18n = {
   sv: {
@@ -269,6 +272,11 @@ const i18n = {
     manualLabel: "Lägg till prompt",
     manualAddButton: "Lägg till",
     manualPlaceholder: "Skriv in en egen prompt och tryck lägg till",
+    categoryCount: "Mina prompts i {name}: {count}/{max}",
+    maxLimitReached: "Max 400 prompts per kategori är nått",
+    resetPromptsTitle: "Återställ prompts",
+    resetPromptsButton: "Återställ till grundinställningar",
+    resetPromptsConfirm: "Ta bort alla egna prompts och återgå till grundprompts?",
     backupTitle: "Säkerhetskopiering",
     saveLocalButton: "Spara på din enhet",
     saveAllButton: "Spara för alla",
@@ -281,6 +289,7 @@ const i18n = {
     generateTitle: "Generera nya förslag",
     generateButton: "Generera 10 nya prompts",
     applyGenerated: "Lägg till valda",
+    noNewSelected: "Inga nya valda prompts att lägga till",
     customTitle: "Mina prompts i valda kategorin",
     deleteSelected: "Ta bort valda",
     openSettings: "Inställningar",
@@ -309,6 +318,11 @@ const i18n = {
     manualLabel: "Add prompt",
     manualAddButton: "Add",
     manualPlaceholder: "Type your own prompt and press add",
+    categoryCount: "{name}: {count}/{max} custom prompts",
+    maxLimitReached: "Max 400 prompts per category reached",
+    resetPromptsTitle: "Reset prompts",
+    resetPromptsButton: "Reset to defaults",
+    resetPromptsConfirm: "Remove all custom prompts and restore default prompts?",
     backupTitle: "Backup",
     saveLocalButton: "Save on your device",
     saveAllButton: "Save for everyone",
@@ -321,6 +335,7 @@ const i18n = {
     generateTitle: "Generate new suggestions",
     generateButton: "Generate 10 prompts",
     applyGenerated: "Add selected",
+    noNewSelected: "No new selected prompts to add",
     customTitle: "My prompts in selected category",
     deleteSelected: "Delete selected",
     openSettings: "Settings",
@@ -343,20 +358,26 @@ let customPrompts = loadCustomPrompts();
 function loadCustomPrompts() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    const rawBackup = localStorage.getItem(LOCAL_BACKUP_KEY);
+    if (!raw) return clone(startDefaults);
+    const parsed = JSON.parse(raw);
 
-    const customData = normalizePromptStore(raw ? JSON.parse(raw) : null);
-    const backupData = parseBackupSnapshot(rawBackup);
-    const combined = combinePromptStores(customData, backupData);
+    const sanitized = {
+      sv: {
+        category1: normalizePromptList(parsed?.sv?.category1, "sv", "category1"),
+        category2: normalizePromptList(parsed?.sv?.category2, "sv", "category2"),
+        category3: normalizePromptList(parsed?.sv?.category3, "sv", "category3")
+      },
+      en: {
+        category1: normalizePromptList(parsed?.en?.category1, "en", "category1"),
+        category2: normalizePromptList(parsed?.en?.category2, "en", "category2"),
+        category3: normalizePromptList(parsed?.en?.category3, "en", "category3")
+      }
+    };
 
-    return combined;
+    return sanitized;
   } catch {
     return clone(startDefaults);
   }
-}
-
-function reloadCustomPrompts() {
-  customPrompts = loadCustomPrompts();
 }
 
 function saveCustomPrompts() {
@@ -367,44 +388,16 @@ function ensureArray(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string" && item.trim()) : [];
 }
 
-function normalizePromptStore(parsed) {
-  if (!parsed) {
-    return clone(startDefaults);
-  }
+function normalizePromptList(items, language, category) {
+  const normalized = ensureArray(items)
+    .map((item) => sanitizePromptText(item))
+    .filter((item) => item && !isInBaseForLanguage(language, category, item));
 
-  const direct = parsed.prompts ? parsed.prompts : parsed;
-  return {
-    sv: {
-      category1: ensureArray(direct?.sv?.category1),
-      category2: ensureArray(direct?.sv?.category2),
-      category3: ensureArray(direct?.sv?.category3)
-    },
-    en: {
-      category1: ensureArray(direct?.en?.category1),
-      category2: ensureArray(direct?.en?.category2),
-      category3: ensureArray(direct?.en?.category3)
-    }
-  };
+  return [...new Set(normalized)].slice(0, MAX_CUSTOM_PROMPTS_PER_CATEGORY);
 }
 
-function combinePromptStores(primary, fallback) {
-  const merged = clone(startDefaults);
-  ["sv", "en"].forEach((language) => {
-    ["category1", "category2", "category3"].forEach((category) => {
-      const set = new Set([
-        ...ensureArray(primary?.[language]?.[category]),
-        ...ensureArray(fallback?.[language]?.[category])
-      ]);
-      merged[language][category] = Array.from(set);
-    });
-  });
-  return merged;
-}
-
-function parseBackupSnapshot(raw) {
-  if (!raw) return null;
-  const parsed = JSON.parse(raw);
-  return parsed?.prompts ? normalizePromptStore(parsed.prompts) : normalizePromptStore(parsed);
+function sanitizePromptText(value) {
+  return typeof value === "string" ? value.trim() : "";
 }
 
 function initTheme() {
@@ -468,12 +461,10 @@ function showScreen(screen) {
   if (screen === "start") {
     screenStart.classList.add("active");
   } else if (screen === "play") {
-    reloadCustomPrompts();
     screenPlay.classList.add("active");
   } else if (screen === "finished") {
     screenFinished.classList.add("active");
   } else if (screen === "settings") {
-    reloadCustomPrompts();
     screenSettings.classList.add("active");
     activeSettingsCategory = settingsCategorySelect.value;
     generatedPromptsByCategory[activeSettingsCategory] = [];
@@ -508,7 +499,6 @@ function startTimer() {
 }
 
 function startRound() {
-  reloadCustomPrompts();
   pickPrompts();
   showScreen("play");
   startTimer();
@@ -563,6 +553,8 @@ function updateLanguageText(language) {
   manualAddBtn.textContent = strings.manualAddButton;
   saveLocalBtn.textContent = strings.saveLocalButton;
   saveAllBtn.textContent = strings.saveAllButton;
+  resetPromptsBtn.textContent = strings.resetPromptsButton;
+  settingsResetTitle.textContent = strings.resetPromptsTitle;
   document.getElementById("settings-backup-title").textContent = strings.backupTitle;
   deleteSelectedBtn.textContent = strings.deleteSelected;
   closeSettingsBtn.textContent = strings.closeSettings;
@@ -571,8 +563,16 @@ function updateLanguageText(language) {
   const categoryNames = strings.settingsCategoryNames;
   categories.forEach((category, index) => {
     const option = settingsCategorySelect.querySelector(`option[value="${category}"]`);
-    if (option) option.textContent = categoryNames[index];
+    if (option) {
+      const customCount = customPrompts[currentLanguage][category].length;
+      option.textContent = `${categoryNames[index]} (${customCount}/${MAX_CUSTOM_PROMPTS_PER_CATEGORY})`;
+    }
   });
+
+  if (settingsCategoryCount) {
+    const countText = getCategoryCountText(getSelectedCategoryName(), getCurrentCategoryLabel());
+    settingsCategoryCount.textContent = countText;
+  }
 
   document.documentElement.lang = strings.lang;
   document.title = strings.title;
@@ -585,12 +585,13 @@ function updateLanguageText(language) {
 }
 
 function addCustomPrompt(category, value) {
-  const clean = value.trim();
+  const clean = sanitizePromptText(value);
   if (!clean) return false;
 
   const list = customPrompts[currentLanguage][category];
   if (list.includes(clean)) return false;
-  if (isInBase(category, clean)) return false;
+  if (isInBaseForLanguage(currentLanguage, category, clean)) return false;
+  if (list.length >= MAX_CUSTOM_PROMPTS_PER_CATEGORY) return "full";
 
   list.push(clean);
   saveCustomPrompts();
@@ -605,9 +606,43 @@ function removeCustomPrompts(category, valuesToRemove) {
   saveCustomPrompts();
 }
 
-function isInBase(category, text) {
-  return basePrompts[currentLanguage][category].includes(text);
+function isInBaseForLanguage(language, category, text) {
+  return basePrompts[language][category].includes(text);
 }
+
+function getCategoryCountText(categoryName, category) {
+  const language = i18n[currentLanguage];
+  const count = customPrompts[currentLanguage][category].length;
+  const hasCountText = language.categoryCount
+    .replace("{name}", categoryName)
+    .replace("{count}", String(count))
+    .replace("{max}", String(MAX_CUSTOM_PROMPTS_PER_CATEGORY));
+
+  return hasCountText;
+}
+
+function getSelectedCategoryName() {
+  const index = categories.indexOf(getCurrentCategoryLabel());
+  const names = i18n[currentLanguage].settingsCategoryNames;
+  return names[index] || "";
+}
+
+function updateSettingsCategoryCounts() {
+  const category = getCurrentCategoryLabel();
+  if (settingsCategoryCount) {
+    settingsCategoryCount.textContent = getCategoryCountText(getSelectedCategoryName(), category);
+  }
+
+  const names = i18n[currentLanguage].settingsCategoryNames;
+  categories.forEach((categoryKey, index) => {
+    const option = settingsCategorySelect.querySelector(`option[value="${categoryKey}"]`);
+    if (option) {
+      const count = customPrompts[currentLanguage][categoryKey].length;
+      option.textContent = `${names[index]} (${count}/${MAX_CUSTOM_PROMPTS_PER_CATEGORY})`;
+    }
+  });
+}
+
 
 function createCheckboxItem(text, checked = true) {
   const item = document.createElement("label");
@@ -662,6 +697,7 @@ function renderSettings() {
   const category = getCurrentCategoryLabel();
   renderCustomList(category);
   renderGeneratedList(generatedPromptsByCategory[category]);
+  updateSettingsCategoryCounts();
 }
 
 function getCurrentCategoryLabel() {
@@ -748,22 +784,41 @@ function applyGeneratedSelection() {
   const boxes = generatedList.querySelectorAll("input:checked");
   const category = getCurrentCategoryLabel();
   const selected = new Set();
+  const successfullyAdded = new Set();
   let added = false;
+  let limitReached = false;
 
   boxes.forEach((box) => {
     const value = box.value;
     selected.add(value);
-    if (addCustomPrompt(category, value)) {
+    const result = addCustomPrompt(category, value);
+    if (result === true) {
+      successfullyAdded.add(value);
       added = true;
+    } else if (result === "full") {
+      limitReached = true;
     }
   });
 
-  setActiveGeneratedPrompts(getActiveGeneratedPrompts().filter((prompt) => !selected.has(prompt)));
+  setActiveGeneratedPrompts(getActiveGeneratedPrompts().filter((prompt) => !successfullyAdded.has(prompt)));
 
   if (added) {
+    setBackupStatus("");
     renderCustomList(category);
     renderGeneratedList(getActiveGeneratedPrompts());
+    updateSettingsCategoryCounts();
+    if (limitReached) {
+      setBackupStatus(i18n[currentLanguage].maxLimitReached);
+    }
     return;
+  }
+
+  if (limitReached) {
+    setBackupStatus(i18n[currentLanguage].maxLimitReached);
+  } else if (selected.size > 0) {
+    setBackupStatus(i18n[currentLanguage].noNewSelected);
+  } else {
+    setBackupStatus("");
   }
 
   renderGeneratedList(getActiveGeneratedPrompts());
@@ -781,16 +836,42 @@ function applyDeleteSelected() {
   if (toDelete.length > 0) {
     removeCustomPrompts(category, toDelete);
     renderCustomList(category);
+    setBackupStatus("");
+    updateSettingsCategoryCounts();
   }
 }
 
 function applyManualAdd() {
   const category = getCurrentCategoryLabel();
-  const didAdd = addCustomPrompt(category, manualPromptInput.value);
-  if (didAdd) {
+  const result = addCustomPrompt(category, manualPromptInput.value);
+  if (result === true) {
     manualPromptInput.value = "";
     renderCustomList(category);
+    setBackupStatus("");
+    updateSettingsCategoryCounts();
+    return;
   }
+
+  if (result === "full") {
+    setBackupStatus(i18n[currentLanguage].maxLimitReached);
+    return;
+  }
+
+  setBackupStatus("");
+}
+
+function resetPromptsToDefaults() {
+  const strings = i18n[currentLanguage];
+  const shouldReset = window.confirm(strings.resetPromptsConfirm);
+  if (!shouldReset) {
+    return;
+  }
+
+  customPrompts = clone(startDefaults);
+  localStorage.removeItem(STORAGE_KEY);
+  settingsCategorySelect.value = activeSettingsCategory || "category1";
+  renderSettings();
+  setBackupStatus("");
 }
 
 function encodePayload(payload) {
@@ -810,13 +891,28 @@ function getBackupSnapshot() {
   };
 }
 
+function downloadTextFile(filename, content, type = "application/json") {
+  const blob = new Blob([content], { type: `${type};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.style.display = "none";
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  URL.revokeObjectURL(url);
+}
+
 function setBackupStatus(message) {
   backupStatus.textContent = message;
 }
 
 function saveLocalBackup() {
   saveCustomPrompts();
-  localStorage.setItem(LOCAL_BACKUP_KEY, JSON.stringify(getBackupSnapshot()));
+  const payload = JSON.stringify(getBackupSnapshot(), null, 2);
+  const date = new Date().toISOString().slice(0, 10);
+  downloadTextFile(`sketchgame-backup-${date}.json`, payload);
   backupPayloadInput.value = "";
   setBackupStatus(i18n[currentLanguage].backupStatusLocal);
 }
@@ -855,13 +951,13 @@ themeToggle.addEventListener("click", () => {
 langToggle.addEventListener("click", () => {
   currentLanguage = currentLanguage === "sv" ? "en" : "sv";
   localStorage.setItem("sketchLanguage", currentLanguage);
-  updateLanguageText(currentLanguage);
   generatedPromptsByCategory = {
     category1: [],
     category2: [],
     category3: []
   };
-  renderGeneratedList(getActiveGeneratedPrompts());
+  updateLanguageText(currentLanguage);
+  renderSettings();
 });
 
 settingsCategorySelect.addEventListener("change", () => {
@@ -875,6 +971,7 @@ applyGeneratedBtn.addEventListener("click", applyGeneratedSelection);
 deleteSelectedBtn.addEventListener("click", applyDeleteSelected);
 saveLocalBtn.addEventListener("click", saveLocalBackup);
 saveAllBtn.addEventListener("click", saveForEveryone);
+resetPromptsBtn.addEventListener("click", resetPromptsToDefaults);
 
 startBtn.addEventListener("click", startRound);
 restartBtn.addEventListener("click", resetRound);

@@ -245,6 +245,13 @@ h1 {
   font-weight: 700;
 }
 
+.settings-count {
+  margin: 0.35rem 0 0;
+  color: var(--muted-text);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
 .settings-block label {
   font-weight: 700;
 }
