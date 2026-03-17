@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kontakt | Uppmake Curator & Consulting</title>
+  <style>
+    :root {
+      --bg: #0b0e12;
+      --panel: rgba(8, 10, 14, 0.78);
+      --text: #f3efe8;
+      --muted: #b7b1a6;
+      --line: rgba(255, 255, 255, 0.22);
+      --accent: #f2b65a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      background: rgba(9, 10, 14, 0.93);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(5px);
+    }
+    .brand {
+      font-size: 17px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .brand a { color: var(--text); text-decoration: none; }
+    .main-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .main-nav a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .main-nav a:hover,
+    .main-nav a.is-active {
+      border-color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.06);
+    }
+    .page-shell {
+      max-width: 1100px;
+      margin: 30px auto 60px;
+      padding: 0 24px 120px;
+      display: grid;
+      gap: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      background: var(--panel);
+    }
+    h1 {
+      margin: 0;
+      color: var(--accent);
+      font-size: clamp(2rem, 3vw, 2.6rem);
+    }
+    p { color: var(--muted); line-height: 1.7; }
+    label { display: block; font-size: 13px; letter-spacing: .05em; text-transform: uppercase; margin: 0 0 7px; }
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      padding: 11px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+      font: inherit;
+      margin-bottom: 14px;
+    }
+    button {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 10px 16px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+    }
+    .info-row {
+      display: grid;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--muted);
+      margin: 8px 0 0;
+    }
+    .info-row strong { color: #fff; }
+    footer {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .14em;
+    }
+    @media (max-width: 960px) {
+      .top { padding: 18px 14px; flex-direction: column; align-items: flex-start; }
+      .main-nav { width: 100%; overflow-x: auto; flex-wrap: nowrap; gap: 8px; }
+      .main-nav::-webkit-scrollbar { display: none; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><a href="index.html">Uppmake · Curator & Consulting</a></div>
+    <nav class="main-nav" aria-label="Huvudmeny">
+      <a href="index.html">Översikt</a>
+      <a href="about.html">Om oss</a>
+      <a href="method.html">Metodik</a>
+      <a href="services.html">Tjänster</a>
+      <a href="projects.html">Projekt</a>
+      <a href="investors.html">Investerare</a>
+      <a href="contact.html">Kontakt</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <h1>Kontakt</h1>
+    <div class="grid">
+      <section class="panel">
+        <p>Diskutera gärna samarbete, förstudie eller due diligence på investerarsidan. Skicka ett kort meddelande och vi återkommer med en första handlingsplan.</p>
+        <form>
+          <label for="name">Namn</label>
+          <input id="name" name="name" placeholder="Ditt namn" />
+          <label for="email">E-post</label>
+          <input id="email" name="email" type="email" placeholder="du@foretag.se" />
+          <label for="message">Meddelande</label>
+          <textarea id="message" name="message" rows="6" placeholder="Beskriv ert projekt och investeringsmål"></textarea>
+          <button type="button">Skicka förfrågan</button>
+        </form>
+      </section>
+      <aside class="panel">
+        <p><strong>Direktkontakt</strong></p>
+        <div class="info-row">
+          <div><strong>E-post</strong><br />investor@uppmake.se</div>
+          <div><strong>Telefon</strong><br />+46 70 000 00 00</div>
+          <div><strong>Adress</strong><br />Stockholm, Sverige</div>
+          <div><strong>Bokning</strong><br />Möte 2–4 veckor efter förfrågan</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>© Uppmake · Curator & Consulting · Formellt investeringsstöd</footer>
+
+  <script>
+    const navLinks = document.querySelectorAll('.main-nav a');
+    const path = window.location.pathname.split('/').pop() || 'contact.html';
+    navLinks.forEach((link) => {
+      if (link.getAttribute('href') === path) link.classList.add('is-active');
+    });
+  </script>
+</body>
+</html>

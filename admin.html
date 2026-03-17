@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Adminpanel · Uppmake</title>
+  <style>
+    :root {
+      --bg: #090b10;
+      --panel: rgba(14, 17, 23, 0.9);
+      --panel-soft: rgba(14, 17, 23, 0.6);
+      --line: rgba(255, 255, 255, 0.18);
+      --muted: #c2c2c2;
+      --text: #f3efe8;
+      --accent: #f2b65a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", "Avenir Next", "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #151b26, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .topbar {
+      max-width: 1120px;
+      margin: 0 auto 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+    }
+
+    .topbar a {
+      color: #d9d9d9;
+      font-size: 12px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      white-space: nowrap;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      background: rgba(14, 17, 23, 0.85);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .note {
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
+      min-height: 20px;
+    }
+
+    .status.error { color: #ff7d7d; }
+    .status.success { color: #9be59b; }
+
+    .login-wrap {
+      max-width: 500px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea,
+    button {
+      width: 100%;
+      font: inherit;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 10px 12px;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      width: auto;
+      padding: 10px 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    button.primary {
+      background: rgba(242, 182, 90, 0.15);
+      border-color: rgba(242, 182, 90, 0.35);
+      color: #fff;
+    }
+
+    .danger {
+      border-color: rgba(255, 100, 100, 0.45);
+      background: rgba(255, 100, 100, 0.08);
+      color: #ffd0d0;
+    }
+
+    .inline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .inline label {
+      margin: 0;
+    }
+
+    .inline input {
+      width: auto;
+      transform: translateY(1px);
+    }
+
+    details.slide-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .slide-card summary {
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      list-style: none;
+    }
+
+    .slide-card summary::-webkit-details-marker { display: none; }
+
+    .slide-body {
+      display: grid;
+      gap: 12px;
+      padding: 8px 2px 2px;
+    }
+
+    .slide-subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+    }
+
+    .metric-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .panel-title {
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .panel {
+      margin-bottom: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+      background: var(--panel-soft);
+    }
+
+    pre {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      max-height: 220px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 14px; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <h1>Adminpanel · Uppmake</h1>
+    <div class="inline">
+      <a href="index.html">Till startsida</a>
+      <button id="logoutBtn" class="danger hidden" type="button">Logga ut</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="loginView">
+      <h2>Inloggning</h2>
+      <p class="note">Lösenordsskyddad redigeringsyta för att uppdatera startsidans innehåll.</p>
+      <p class="note">Det här är en lokal lösning i webbläsaren och bör bytas till serverinloggning i produktion.</p>
+      <form id="loginForm" class="form-grid login-wrap" autocomplete="off">
+        <div>
+          <label for="adminPassword">Lösenord</label>
+          <input type="password" id="adminPassword" name="adminPassword" placeholder="Ange lösenord" required />
+        </div>
+        <div class="inline">
+          <input id="rememberSession" type="checkbox" />
+          <label for="rememberSession">Behåll inloggning i 24 timmar</label>
+        </div>
+        <div class="toolbar">
+          <button class="primary" type="submit">Logga in</button>
+        </div>
+      </form>
+      <div id="loginMessage" class="status error"></div>
+    </section>
+
+    <section id="adminPanel" class="hidden">
+      <p class="note">Det här liknar ett enkelt CMS: redigera innehåll, förhandsgranska JSON och publicera direkt i webbläsaren.</p>
+
+      <form id="contentForm" class="form-grid" autocomplete="off">
+        <section class="panel">
+          <h3 class="panel-title">Global information</h3>
+          <div class="form-grid grid-2">
+            <div>
+              <label for="brand">Varumärke</label>
+              <input id="brand" name="brand" type="text" />
+            </div>
+            <div>
+              <label for="topNote">Hero-etikett</label>
+              <input id="topNote" name="topNote" type="text" />
+            </div>
+            <div>
+              <label for="ctaLabel">CTA-text</label>
+              <input id="ctaLabel" name="ctaLabel" type="text" />
+            </div>
+            <div>
+              <label for="ctaUrl">CTA-länk</label>
+              <input id="ctaUrl" name="ctaUrl" type="text" />
+            </div>
+            <div>
+              <label for="footer">Footer</label>
+              <input id="footer" name="footer" type="text" />
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h3 class="panel-title">Case och slides</h3>
+          <div id="slidesRoot"></div>
+        </section>
+
+        <section class="panel">
+          <h3 class="panel-title">Backup / export</h3>
+          <label for="jsonBlob">JSON backup och import</label>
+          <textarea id="jsonBlob" rows="7" placeholder="Klistra in exporterad JSON här"></textarea>
+          <div class="toolbar">
+            <button class="primary" type="submit">Spara ändringar</button>
+            <button type="button" id="resetContent" class="danger">Återställ default</button>
+            <button type="button" id="exportContent">Exportera JSON</button>
+            <button type="button" id="importContent">Importera JSON</button>
+          </div>
+          <div class="status" id="saveMessage"></div>
+        </section>
+      </form>
+
+      <div>
+        <p class="note" style="margin-bottom: 8px;">Senast sparad data</p>
+        <pre id="jsonPreview">--</pre>
+      </div>
+    </section>
+  </main>
+
+  <script src="site-content.js"></script>
+  <script>
+    const loginView = document.getElementById('loginView');
+    const adminPanel = document.getElementById('adminPanel');
+    const loginMessage = document.getElementById('loginMessage');
+    const saveMessage = document.getElementById('saveMessage');
+    const loginForm = document.getElementById('loginForm');
+    const contentForm = document.getElementById('contentForm');
+    const slidesRoot = document.getElementById('slidesRoot');
+    const jsonPreview = document.getElementById('jsonPreview');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const rememberSession = document.getElementById('rememberSession');
+
+    const ADMIN_PASSWORD_HASH = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9';
+    const SESSION_KEY = 'uppmake_admin_session';
+    const SESSION_TTL_HOURS = 4;
+    const SESSION_TTL_REMEMBER_HOURS = 24;
+
+    async function hashText(value) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(value);
+      const digest = await crypto.subtle.digest('SHA-256', data);
+      const bytes = Array.from(new Uint8Array(digest));
+      return bytes.map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function setStatus(element, message, type) {
+      element.textContent = message;
+      element.className = `status ${type}`;
+    }
+
+    function setSession(hours = SESSION_TTL_HOURS) {
+      const expiresAt = Date.now() + (hours * 60 * 60 * 1000);
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ expiresAt }));
+    }
+
+    function clearSession() {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    function isSessionValid() {
+      const raw = sessionStorage.getItem(SESSION_KEY);
+      if (!raw) return false;
+      try {
+        const session = JSON.parse(raw);
+        return Number.isFinite(session.expiresAt) && Date.now() < session.expiresAt;
+      } catch {
+        return false;
+      }
+    }
+
+    function createField(label, name, value, isTextarea = false) {
+      const wrapper = document.createElement('div');
+      const control = isTextarea ? document.createElement('textarea') : document.createElement('input');
+      const labelEl = document.createElement('label');
+      labelEl.textContent = label;
+      labelEl.setAttribute('for', name);
+      control.id = name;
+      control.name = name;
+      if (!isTextarea) {
+        control.type = 'text';
+      } else {
+        control.rows = 4;
+      }
+      control.value = value || '';
+      wrapper.appendChild(labelEl);
+      wrapper.appendChild(control);
+      return wrapper;
+    }
+
+    function renderSlides(slides) {
+      slidesRoot.innerHTML = '';
+      slides.forEach((slide, index) => {
+        const card = document.createElement('details');
+        card.className = 'slide-card';
+        if (index === 0) {
+          card.open = true;
+        }
+
+        const summary = document.createElement('summary');
+        summary.textContent = `Slide ${index + 1} · ${slide.title || 'Case'}`;
+        card.appendChild(summary);
+
+        const body = document.createElement('div');
+        body.className = 'slide-body';
+        const grid = document.createElement('div');
+        grid.className = 'form-grid grid-2';
+
+        const image = createField('Bild-URL', `slide_${index}_image`, slide.image || '');
+        const imageAlt = createField('Bild-alt', `slide_${index}_imageAlt`, slide.imageAlt || '');
+        const kicker = createField('Kicker', `slide_${index}_kicker`, slide.kicker || '');
+        const title = createField('Rubrik', `slide_${index}_title`, slide.title || '');
+        const text = createField('Brödtext', `slide_${index}_text`, slide.text || '', true);
+        [image, imageAlt, kicker, title, text].forEach((node) => grid.appendChild(node));
+
+        const metricTitle = document.createElement('p');
+        metricTitle.className = 'slide-subtitle';
+        metricTitle.textContent = 'Metrikrader';
+        const metricWrap = document.createElement('div');
+        metricWrap.className = 'metric-grid';
+        const metric1 = createField('Metrik 1 - värde', `slide_${index}_metric0_value`, slide.metrics && slide.metrics[0] ? slide.metrics[0].value : '');
+        const metric1Label = createField('Metrik 1 - label', `slide_${index}_metric0_label`, slide.metrics && slide.metrics[0] ? slide.metrics[0].label : '');
+        const metric2 = createField('Metrik 2 - värde', `slide_${index}_metric1_value`, slide.metrics && slide.metrics[1] ? slide.metrics[1].value : '');
+        const metric2Label = createField('Metrik 2 - label', `slide_${index}_metric1_label`, slide.metrics && slide.metrics[1] ? slide.metrics[1].label : '');
+        const metric3 = createField('Metrik 3 - värde', `slide_${index}_metric2_value`, slide.metrics && slide.metrics[2] ? slide.metrics[2].value : '');
+        const metric3Label = createField('Metrik 3 - label', `slide_${index}_metric2_label`, slide.metrics && slide.metrics[2] ? slide.metrics[2].label : '');
+        [metric1, metric1Label, metric2, metric2Label, metric3, metric3Label].forEach((metric) => metricWrap.appendChild(metric));
+
+        const caseTitle = createField('Case-rubrik', `slide_${index}_case_title`, slide.caseData ? slide.caseData.title : `Case ${String(index + 1).padStart(2, '0')}`);
+        const caseFocus = createField('Case - fokus', `slide_${index}_case_focus`, slide.caseData ? slide.caseData.focus : '', true);
+        const caseBefore = createField('Case - utgångsläge', `slide_${index}_case_before`, slide.caseData ? slide.caseData.before : '', true);
+        const caseDelivery = createField('Case - leverans', `slide_${index}_case_delivery`, slide.caseData ? slide.caseData.delivery : '', true);
+        const caseKpi = createField('Case - KPI', `slide_${index}_case_kpi`, slide.caseData ? slide.caseData.kpi : '');
+        const caseRisk = createField('Case - risk', `slide_${index}_case_risk`, slide.caseData ? slide.caseData.risk : '', true);
+
+        const caseFields = [caseTitle, caseFocus, caseBefore, caseDelivery, caseKpi, caseRisk];
+        const caseTitleText = document.createElement('p');
+        caseTitleText.className = 'slide-subtitle';
+        caseTitleText.textContent = 'Case-dokumentation';
+        const caseWrap = document.createElement('div');
+        caseFields.forEach((field) => caseWrap.appendChild(field));
+
+        body.appendChild(grid);
+        body.appendChild(metricTitle);
+        body.appendChild(metricWrap);
+        body.appendChild(caseTitleText);
+        body.appendChild(caseWrap);
+        card.appendChild(body);
+        slidesRoot.appendChild(card);
+      });
+    }
+
+    function currentContentFromForm() {
+      const slides = [];
+      const base = window.UppmakeContent ? window.UppmakeContent.loadContent() : null;
+      const slideCount = base && Array.isArray(base.slides) ? base.slides.length : 0;
+
+      for (let index = 0; index < slideCount; index += 1) {
+        slides.push({
+          image: document.getElementById(`slide_${index}_image`).value.trim(),
+          imageAlt: document.getElementById(`slide_${index}_imageAlt`).value.trim(),
+          kicker: document.getElementById(`slide_${index}_kicker`).value.trim(),
+          title: document.getElementById(`slide_${index}_title`).value.trim(),
+          text: document.getElementById(`slide_${index}_text`).value.trim(),
+          metrics: [
+            {
+              value: document.getElementById(`slide_${index}_metric0_value`).value.trim(),
+              label: document.getElementById(`slide_${index}_metric0_label`).value.trim()
+            },
+            {
+              value: document.getElementById(`slide_${index}_metric1_value`).value.trim(),
+              label: document.getElementById(`slide_${index}_metric1_label`).value.trim()
+            },
+            {
+              value: document.getElementById(`slide_${index}_metric2_value`).value.trim(),
+              label: document.getElementById(`slide_${index}_metric2_label`).value.trim()
+            }
+          ],
+          caseData: {
+            title: document.getElementById(`slide_${index}_case_title`).value.trim(),
+            focus: document.getElementById(`slide_${index}_case_focus`).value.trim(),
+            before: document.getElementById(`slide_${index}_case_before`).value.trim(),
+            delivery: document.getElementById(`slide_${index}_case_delivery`).value.trim(),
+            kpi: document.getElementById(`slide_${index}_case_kpi`).value.trim(),
+            risk: document.getElementById(`slide_${index}_case_risk`).value.trim()
+          }
+        });
+      }
+
+      return {
+        brand: document.getElementById('brand').value.trim(),
+        topNote: document.getElementById('topNote').value.trim(),
+        ctaLabel: document.getElementById('ctaLabel').value.trim(),
+        ctaUrl: document.getElementById('ctaUrl').value.trim(),
+        footer: document.getElementById('footer').value.trim(),
+        slides
+      };
+    }
+
+    function fillForm(content) {
+      document.getElementById('brand').value = content.brand || '';
+      document.getElementById('topNote').value = content.topNote || '';
+      document.getElementById('ctaLabel').value = content.ctaLabel || '';
+      document.getElementById('ctaUrl').value = content.ctaUrl || '';
+      document.getElementById('footer').value = content.footer || '';
+      renderSlides(content.slides || []);
+      jsonPreview.textContent = JSON.stringify(content, null, 2);
+      const jsonInput = document.getElementById('jsonBlob');
+      if (jsonInput) {
+        jsonInput.value = JSON.stringify(content, null, 2);
+      }
+    }
+
+    function showPanel(authenticated) {
+      if (authenticated) {
+        loginView.classList.add('hidden');
+        adminPanel.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+        const content = window.UppmakeContent ? window.UppmakeContent.loadContent() : window.UppmakeContent.defaultContent;
+        fillForm(content);
+      } else {
+        loginView.classList.remove('hidden');
+        adminPanel.classList.add('hidden');
+        logoutBtn.classList.add('hidden');
+      }
+    }
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const pw = document.getElementById('adminPassword').value;
+      const hash = await hashText(pw);
+      if (hash === ADMIN_PASSWORD_HASH) {
+        const ttl = rememberSession.checked ? SESSION_TTL_REMEMBER_HOURS : SESSION_TTL_HOURS;
+        setSession(ttl);
+        setStatus(loginMessage, 'Inloggning godkänd.', 'success');
+        showPanel(true);
+      } else {
+        setStatus(loginMessage, 'Fel lösenord. Försök igen.', 'error');
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      clearSession();
+      setStatus(loginMessage, 'Du är utloggad.', 'note');
+      showPanel(false);
+    });
+
+    contentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const content = currentContentFromForm();
+      const saved = window.UppmakeContent.saveContent(content);
+      fillForm(saved);
+      setStatus(saveMessage, 'Sparat. Öppna startsidan för att se ändringarna.', 'success');
+    });
+
+    document.getElementById('resetContent').addEventListener('click', () => {
+      const reset = window.UppmakeContent.resetContent();
+      fillForm(reset);
+      setStatus(saveMessage, 'Återställt till originalinnehåll.', 'success');
+    });
+
+    document.getElementById('exportContent').addEventListener('click', () => {
+      const content = currentContentFromForm();
+      const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'uppmake-content.json';
+      link.click();
+      URL.revokeObjectURL(url);
+      setStatus(saveMessage, 'Export klar.', 'success');
+    });
+
+    document.getElementById('importContent').addEventListener('click', () => {
+      const input = document.getElementById('jsonBlob').value.trim();
+      if (!input) {
+        setStatus(saveMessage, 'Klistra in JSON innan du importerar.', 'error');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(input);
+        const saved = window.UppmakeContent.saveContent(parsed);
+        fillForm(saved);
+        setStatus(saveMessage, 'Import lyckades.', 'success');
+      } catch {
+        setStatus(saveMessage, 'Ogiltig JSON.', 'error');
+      }
+    });
+
+    const defaultContent = window.UppmakeContent ? window.UppmakeContent.defaultContent : null;
+    if (defaultContent) {
+      fillForm(defaultContent);
+    }
+
+    showPanel(isSessionValid());
+  </script>
+</body>
+</html>

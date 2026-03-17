@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tjänster | Uppmake Curator & Consulting</title>
+  <style>
+    :root {
+      --bg: #0b0e12;
+      --panel: rgba(8, 10, 14, 0.78);
+      --text: #f3efe8;
+      --muted: #b7b1a6;
+      --line: rgba(255, 255, 255, 0.22);
+      --accent: #f2b65a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      background: rgba(9, 10, 14, 0.93);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(5px);
+    }
+    .brand { font-size: 17px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+    .brand a { color: var(--text); text-decoration: none; }
+    .main-nav { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .main-nav a { color: var(--text); text-decoration: none; border: 1px solid var(--line); padding: 9px 14px; border-radius: 999px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .main-nav a:hover, .main-nav a.is-active { border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.06); }
+    .page-shell { max-width: 1100px; margin: 30px auto 60px; padding: 0 24px 120px; display: grid; gap: 20px; }
+    .hero { padding: 34px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(130deg, rgba(242, 182, 90, 0.13), rgba(10, 12, 16, 0.2)); }
+    .hero h1 { margin: 0 0 8px; font-size: clamp(2rem, 3vw, 2.6rem); color: var(--accent); }
+    .hero p { margin: 0; max-width: 72ch; line-height: 1.7; }
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .tile {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px;
+      background: var(--panel);
+    }
+    .tile h3 { margin: 0 0 8px; }
+    .tile p { margin: 0 0 14px; color: var(--muted); line-height: 1.6; }
+    .tile ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.55; }
+    .tile li + li { margin-top: 8px; }
+    footer { border-top: 1px solid rgba(255,255,255,.1); padding: 18px; text-align: center; color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: .14em; }
+    @media (max-width: 960px) {
+      .top { padding: 18px 14px; flex-direction: column; align-items: flex-start; }
+      .main-nav { width: 100%; overflow-x: auto; flex-wrap: nowrap; gap: 8px; }
+      .main-nav::-webkit-scrollbar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><a href="index.html">Uppmake · Curator & Consulting</a></div>
+    <nav class="main-nav" aria-label="Huvudmeny">
+      <a href="index.html">Översikt</a>
+      <a href="about.html">Om oss</a>
+      <a href="method.html">Metodik</a>
+      <a href="services.html">Tjänster</a>
+      <a href="projects.html">Projekt</a>
+      <a href="investors.html">Investerare</a>
+      <a href="contact.html">Kontakt</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <h1>Tjänster</h1>
+      <p>Vi hjälper er att avgöra vilka projekt som ska prioriteras först, och varför – med tydlig ekonomisk motivering bakom varje beslut.</p>
+    </section>
+
+    <section class="services">
+      <article class="tile">
+        <h3>Curatorial Due Diligence</h3>
+        <p>Vi bedömer projektets konstnärliga och kulturella kvalitet i relation till marknadsutsikter.</p>
+        <ul>
+          <li>Marknadspositionering</li>
+          <li>Riskanalys av genomförande</li>
+          <li>Prioritering av projektportfölj</li>
+        </ul>
+      </article>
+      <article class="tile">
+        <h3>Projektstyrning för investerare</h3>
+        <p>Kontrollerade processer för budget, tidplan och milstolpar från start till leverans.</p>
+        <ul>
+          <li>Kickoff och målformulering</li>
+          <li>Veckovisa statusramverk</li>
+          <li>Risklogg och avhjälpningsplan</li>
+        </ul>
+      </article>
+      <article class="tile">
+        <h3>Growth & Go-to-market</h3>
+        <p>Strategi för kommersiell genomslagskraft och hållbar intäktsmodell.</p>
+        <ul>
+          <li>Pris- och distributionsstrategi</li>
+          <li>Marknadsnischer och partnerships</li>
+          <li>Lanseringsplan med KPI-ramverk</li>
+        </ul>
+      </article>
+      <article class="tile">
+        <h3>Exit-preparering</h3>
+        <p>Vi säkerställer dokumentation och avkastningslogik inför fortsatt kapitalrunda eller avyttring.</p>
+        <ul>
+          <li>Data-room struktur</li>
+          <li>Rörelserik ekonomiöversikt</li>
+          <li>Risktätning i investerarberättelsen</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer>© Uppmake · Curator & Consulting</footer>
+
+  <script>
+    const navLinks = document.querySelectorAll('.main-nav a');
+    const path = window.location.pathname.split('/').pop() || 'services.html';
+    navLinks.forEach((link) => {
+      if (link.getAttribute('href') === path) link.classList.add('is-active');
+    });
+  </script>
+</body>
+</html>

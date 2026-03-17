@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flow × Curator Consulting | Uppmake Curator & Consulting</title>
+  <style>
+    :root {
+      --bg: #0b0e12;
+      --panel: rgba(8, 10, 14, 0.78);
+      --panel-soft: rgba(8, 10, 14, 0.44);
+      --text: #f3efe8;
+      --muted: #b7b1a6;
+      --line: rgba(255, 255, 255, 0.22);
+      --accent: #f2b65a;
+      --accent-2: #2da8ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    body { cursor: grab; }
+
+    .top {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 60;
+      padding: 22px 28px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.52), transparent);
+      gap: 14px;
+    }
+
+    .top > * { pointer-events: auto; }
+
+    .brand {
+      font-size: 17px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .brand a { color: var(--text); text-decoration: none; }
+
+    .main-nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .main-nav a {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 220ms ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.is-active {
+      border-color: rgba(255, 255, 255, 0.55);
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+      transform: translateY(-1px);
+    }
+
+    .main-nav .cta {
+      border-color: rgba(242, 182, 90, 0.45);
+      color: #ffebcc;
+      background: rgba(242, 182, 90, 0.09);
+    }
+
+    .top-note {
+      margin: 70px 28px 0;
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      top: 0;
+    }
+
+    .top-note .label {
+      border: 1px solid var(--line);
+      color: #fff;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(8, 10, 14, 0.58);
+      backdrop-filter: blur(4px);
+    }
+
+    .flow {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .flow::-webkit-scrollbar { display: none; }
+
+    .slide {
+      position: relative;
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.93;
+      transform: scale(1.02);
+      transition: transform 420ms ease;
+    }
+
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.25));
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .slide.is-active img { transform: scale(1); }
+
+    .copy {
+      position: absolute;
+      left: 8vw;
+      right: 8vw;
+      bottom: 15vh;
+      z-index: 2;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 18px 20px;
+      max-width: 760px;
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 360ms ease, transform 360ms ease;
+      will-change: opacity, transform;
+    }
+
+    .slide.is-active .copy {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 120ms;
+    }
+
+    .copy-kicker {
+      margin: 0 0 8px;
+      font-size: 12px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .copy h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 2.45vw, 2.65rem);
+      letter-spacing: 0.03em;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    .copy p {
+      margin: 0;
+      max-width: 60ch;
+      line-height: 1.72;
+      color: var(--text);
+      font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+    }
+
+    .deal-metrics {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .deal-metrics .metric {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(9, 11, 16, 0.6);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #d7d7d7;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .case-open {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: all 220ms ease;
+    }
+
+    .case-open:hover {
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .slide-progress {
+      position: fixed;
+      top: 18px;
+      right: 28px;
+      z-index: 65;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+      font-size: 12px;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .slide-progress-track {
+      width: 130px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .slide-progress-fill {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform-origin: left;
+      transform: scaleX(0.2);
+      transition: transform 250ms ease;
+    }
+
+    .footer {
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: 10;
+      text-align: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 10px;
+      background: linear-gradient(to top, rgba(4, 5, 8, 0.75), transparent);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .footer a { color: var(--muted); }
+
+    .case-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(4, 7, 12, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .case-modal[open],
+    .case-modal.is-open { display: flex; }
+
+    .case-card {
+      width: min(760px, 92vw);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(11, 14, 18, 0.95);
+      box-shadow: 0 26px 90px rgba(0, 0, 0, 0.45);
+      padding: 22px;
+      position: relative;
+      animation: popIn 210ms ease;
+    }
+
+    .case-card h2 { margin: 0 0 8px; color: #fff; font-size: clamp(1.45rem, 2vw, 1.9rem); }
+    .case-card h3 { margin: 14px 0 8px; color: #f7f7f7; font-size: 1rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .case-card p { margin: 0; color: #d4d4d4; line-height: 1.7; }
+
+    .case-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .case-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .case-box {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .case-box strong { color: #fff; display: block; margin-bottom: 4px; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.98) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @media (max-width: 1024px) {
+      .top {
+        padding: 16px 14px 8px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .brand {
+        font-size: 15px;
+      }
+
+      .main-nav {
+        width: 100%;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        gap: 8px;
+        padding-bottom: 3px;
+      }
+
+      .main-nav::-webkit-scrollbar { display: none; }
+      .main-nav a { flex: 0 0 auto; }
+
+      .top-note {
+        margin: 104px 14px 0;
+      }
+
+      .copy {
+        left: 5vw;
+        right: 5vw;
+        bottom: 10vh;
+      }
+
+      .copy h2 { font-size: 1.5rem; }
+      .slide-progress {
+        right: 14px;
+        top: 16px;
+      }
+
+      .deal-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><a href="index.html">Uppmake · Curator & Consulting</a></div>
+    <nav class="main-nav" aria-label="Huvudmeny">
+      <a href="index.html">Översikt</a>
+      <a href="about.html">Om oss</a>
+      <a href="method.html">Metodik</a>
+      <a href="services.html">Tjänster</a>
+      <a href="projects.html">Projekt</a>
+      <a href="investors.html">Investerare</a>
+      <a href="contact.html">Kontakt</a>
+      <a href="contact.html" class="cta">Boka strategisamtal</a>
+    </nav>
+  </header>
+
+  <div class="top-note"><div class="label">Vi prioriterar projekt där kapitalet gör störst skillnad först</div></div>
+
+  <div class="slide-progress" aria-hidden="true">
+    <span id="slideProgressIndex">1 / 6</span>
+    <span class="slide-progress-track"><span id="slideProgressFill" class="slide-progress-fill"></span></span>
+  </div>
+
+  <main class="flow" id="flow">
+    <section class="slide" data-case-title="Pilot: Portfolio Flow" data-case-focus="Urval av tre högprioriterade projekt i ny finansieringsrunda" data-case-before="Otydliga beslutsregler och oklara genomförandeansvar." data-case-delivery="Implementerade investeringsramverk, mötesstruktur och uppföljningspunkter per vecka." data-case-kpi="Minskad omförhandlingstid: 24 dagar → 11 dagar" data-case-risk="Minskad osäkerhet i beslutskedjan genom tydliga go/no-go-gates">
+      <img src="https://gilabase.com/wp-content/uploads/2025/08/light-2.jpg" alt="Projektvisualisering för strategi" />
+      <article class="copy">
+        <p class="copy-kicker">Case 01 · Investeringspipeline</p>
+        <h2>Från idé till styrning</h2>
+        <p>Vi hjälper er att prioritera projekt efter effekt, risk och tidplan, så att kapitalet hamnar där sannolikheten att lyckas är högst.</p>
+        <div class="deal-metrics" aria-label="Investorsammanfattning">
+          <div class="metric"><strong>12</strong> projekt identifierade</div>
+          <div class="metric"><strong>4</strong> prioriterades direkt</div>
+          <div class="metric"><strong>8</strong> beslutspunkter per kvartal</div>
+        </div>
+        <button class="case-open" type="button">Visa case-kort</button>
+      </article>
+    </section>
+
+    <section class="slide" data-case-title="Due diligence för sceniska projekt" data-case-focus="Kvalitetsgranskning med kombinerad estetisk och kommersiell score" data-case-before="Brist på tydlig jämförelse mellan ansökta projekt och faktisk kapacitet." data-case-delivery="Levererade intern scorecard-modell för risk, kostnad, timing och distributionsstyrka." data-case-kpi="10-veckors beslutsfönster i stället för 6 veckor" data-case-risk="Lågre budgetavvikelse genom förhandsgranskad genomförbarhet">
+      <img src="https://gilabase.com/wp-content/uploads/2025/08/look-at-me2.jpg" alt="Finansieringsanalys och due diligence" />
+      <article class="copy">
+        <p class="copy-kicker">Case 02 · Kvalitetssäkring</p>
+        <h2>Curatorial due diligence</h2>
+        <p>Varje projekt värderas utifrån genomförbarhet, varumärkesrelevans och förväntad avkastning i relation till risknivå.</p>
+        <button class="case-open" type="button">Visa case-kort</button>
+      </article>
+    </section>
+
+    <section class="slide" data-case-title="Skalbar rådgivning i tillväxtfas" data-case-focus="Koppling mellan curatoriska mål och kommersiell plan" data-case-before="Möten gav många beslut, men låg utförandehastighet mellan besluten." data-case-delivery="Införde governance board och projektkoordinator med mätbara leveransmål." data-case-kpi="24 % snabbare go-to-market" data-case-risk="Ökad tydlighet minskade omstarter i produktion">
+      <img src="https://gilabase.com/wp-content/uploads/2025/08/Humanoid-308room-view4.jpg" alt="Kreativ rådgivning för tillväxt" />
+      <article class="copy">
+        <p class="copy-kicker">Case 03 · Tillväxt</p>
+        <h2>Consulting som skalar</h2>
+        <p>Vi styr från idé till leverans med en process där kreativ kvalitet mäts mot ekonomisk hållbarhet i varje steg.</p>
+        <button class="case-open" type="button">Visa case-kort</button>
+      </article>
+    </section>
+
+    <section class="slide" data-case-title="Nätverksekosystem för projektägare" data-case-focus="Snabbare leverans genom specialistnätverk och partnerlogik" data-case-before="Projektteam arbetade isolerat utan synk mot externa leverantörer." data-case-delivery="Införde central kontaktplan med tydlig ansvarsfördelning mellan partnernätverket." data-case-kpi="3 veckor till första pilotavtal" data-case-risk="Lägre beroenderisk mellan projektledare och partner">
+      <img src="https://gilabase.com/wp-content/uploads/2025/08/Terra-Nova_room-5d.jpg" alt="Nätverk och partners" />
+      <article class="copy">
+        <p class="copy-kicker">Case 04 · Nätverk</p>
+        <h2>Stark projektledning för investerare</h2>
+        <p>Nätverk och leveranspartners organiseras i kontrollerade spår för att minska osäkerhet och öka genomförandestyrka.</p>
+        <button class="case-open" type="button">Visa case-kort</button>
+      </article>
+    </section>
+
+    <section class="slide" data-case-title="Transparensmodul för finansiärer" data-case-focus="Minskade informationsluckor mellan styrgrupp och projektledning" data-case-before="Spridd rapportering och otydlig kostnadslogg gjorde uppföljning osäker." data-case-delivery="Byggde digital rapportstruktur med milstolpekort och ansvarshistorik." data-case-kpi="Mindre än 0.8 % felrapportering i kvartalsrapport" data-case-risk="Minskat missförstånd i statusmöten">
+      <img src="https://gilabase.com/wp-content/uploads/2025/08/Think-Sensual-4-scaled.jpg" alt="Resultatrapportering" />
+      <article class="copy">
+        <p class="copy-kicker">Case 05 · Rapportering</p>
+        <h2>Transparens i varje fas</h2>
+        <p>Investorerna får tydliga beslutsunderlag via enhetliga rapporter med risk, kostnad och kvalitetsindikatorer per fas.</p>
+        <button class="case-open" type="button">Visa case-kort</button>
+      </article>
+    </section>
+
+    <section class="slide" data-case-title="Komplett kompetenspaket" data-case-focus="Helhetssyn mellan curatorisk kvalitet och kapitaldisciplin" data-case-before="Hög kompetens fanns i teamet men saknade samordnad struktur." data-case-delivery="Lanserade konsult-modell med leveransfaser, KPI-ramverk och exitförberedelse." data-case-kpi="88 % projekt uppnår definierad slutfas" data-case-risk="Mindre beroende av enskilda individer i kritiska beslut">
+      <img src="https://gilabase.com/wp-content/uploads/2023/01/batterypack-1.jpg" alt="Affärsförslag för nästa kapitel" />
+      <article class="copy">
+        <p class="copy-kicker">Case 06 · Kapacitetsanalys</p>
+        <h2>Bygger nästa investeringskapital</h2>
+        <p>Teamets styrka blir investerbar genom att kombinera kreativ expertis med tydliga processer, KPI:er och rapporteringsstruktur.</p>
+        <button class="case-open" type="button">Visa case-kort</button>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    © Uppmake · Curator & Consulting · Förberedda för seriösa investerare
+  </footer>
+
+  <aside class="case-modal" id="caseModal" aria-labelledby="caseTitle" aria-describedby="caseText" role="dialog" aria-modal="true">
+    <div class="case-card">
+      <button class="case-close" type="button" aria-label="Stäng case-kort">✕</button>
+      <h2 id="caseTitle">Case</h2>
+      <p id="caseText">Detaljer laddas från vald slide.</p>
+      <div class="case-grid">
+        <div class="case-box"><strong>Fokus</strong><p id="caseFocus"></p></div>
+        <div class="case-box"><strong>Utgångsläge</strong><p id="caseBefore"></p></div>
+        <div class="case-box"><strong>Leverans</strong><p id="caseDelivery"></p></div>
+        <div class="case-box"><strong>Nyckeltal</strong><p id="caseKpi"></p></div>
+      </div>
+      <h3>Risk & styrning</h3>
+      <p id="caseRisk"></p>
+    </div>
+  </aside>
+
+  <script src="site-content.js"></script>
+  <script>
+    function applySiteContent(content) {
+      const navLinks = document.querySelectorAll('.main-nav a');
+      const path = window.location.pathname.split('/').pop() || 'index.html';
+      navLinks.forEach((link) => {
+        if (link.getAttribute('href') === path) {
+          link.classList.add('is-active');
+        }
+      });
+
+      const brand = document.querySelector('.brand a');
+      if (brand) {
+        brand.textContent = content.brand || 'Uppmake · Curator & Consulting';
+      }
+
+      const note = document.querySelector('.top-note .label');
+      if (note) {
+        note.textContent = content.topNote || '';
+      }
+
+      const cta = document.querySelector('.main-nav .cta');
+      if (cta) {
+        cta.textContent = content.ctaLabel || cta.textContent;
+        cta.href = content.ctaUrl || cta.href;
+      }
+
+      const footer = document.querySelector('.footer');
+      if (footer) {
+        footer.textContent = content.footer || footer.textContent;
+      }
+
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      (content.slides || []).forEach((slideData, index) => {
+        const slide = slides[index];
+        if (!slide) return;
+
+        const image = slide.querySelector('img');
+        const kicker = slide.querySelector('.copy-kicker');
+        const title = slide.querySelector('h2');
+        const body = slide.querySelector('.copy > p');
+        const metricNodes = slide.querySelectorAll('.metric');
+        const caseData = slideData.caseData || {};
+
+        if (image && slideData.image) {
+          image.src = slideData.image;
+          image.alt = slideData.imageAlt || image.alt;
+        }
+
+        if (kicker) kicker.textContent = slideData.kicker || '';
+        if (title) title.textContent = slideData.title || '';
+        if (body) body.textContent = slideData.text || '';
+
+        metricNodes.forEach((metricNode, idx) => {
+          const metric = slideData.metrics && slideData.metrics[idx] ? slideData.metrics[idx] : null;
+          const value = metric && metric.value !== '' ? metric.value : '';
+          const label = metric && metric.label !== '' ? metric.label : '';
+          metricNode.innerHTML = `<strong>${value}</strong> ${label}`;
+        });
+
+        slide.dataset.caseTitle = caseData.title || `Case ${String(index + 1).padStart(2, '0')}`;
+        slide.dataset.caseFocus = caseData.focus || '—';
+        slide.dataset.caseBefore = caseData.before || '—';
+        slide.dataset.caseDelivery = caseData.delivery || '—';
+        slide.dataset.caseKpi = caseData.kpi || '—';
+        slide.dataset.caseRisk = caseData.risk || '—';
+      });
+    }
+
+    const flow = document.getElementById('flow');
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const progressIndex = document.getElementById('slideProgressIndex');
+    const progressFill = document.getElementById('slideProgressFill');
+
+    const modal = document.getElementById('caseModal');
+    const caseTitle = document.getElementById('caseTitle');
+    const caseText = document.getElementById('caseText');
+    const caseFocus = document.getElementById('caseFocus');
+    const caseBefore = document.getElementById('caseBefore');
+    const caseDelivery = document.getElementById('caseDelivery');
+    const caseKpi = document.getElementById('caseKpi');
+    const caseRisk = document.getElementById('caseRisk');
+    const caseButtons = document.querySelectorAll('.case-open');
+    const closeButton = document.querySelector('.case-close');
+
+    function getActiveIndex() {
+      const slideWidth = flow.clientWidth;
+      if (!slideWidth) return 0;
+      const current = Math.round(flow.scrollLeft / slideWidth);
+      return Math.max(0, Math.min(slides.length - 1, current));
+    }
+
+    function updateActiveState() {
+      const activeIndex = getActiveIndex();
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('is-active', idx === activeIndex);
+      });
+      progressIndex.textContent = `${activeIndex + 1} / ${slides.length}`;
+      const ratio = (activeIndex + 1) / slides.length;
+      progressFill.style.transform = `scaleX(${ratio.toFixed(2)})`;
+    }
+
+    let rafId = null;
+    flow.addEventListener('scroll', () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        updateActiveState();
+        rafId = null;
+      });
+    });
+
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    flow.addEventListener('mousedown', (e) => {
+      isDown = true;
+      flow.classList.add('dragging');
+      startX = e.pageX - flow.offsetLeft;
+      scrollLeft = flow.scrollLeft;
+      document.body.style.cursor = 'grabbing';
+    });
+
+    flow.addEventListener('mouseleave', () => {
+      isDown = false;
+      document.body.style.cursor = 'grab';
+    });
+
+    flow.addEventListener('mouseup', () => {
+      isDown = false;
+      document.body.style.cursor = 'grab';
+    });
+
+    flow.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - flow.offsetLeft;
+      const walk = (x - startX) * 1.2;
+      flow.scrollLeft = scrollLeft - walk;
+    });
+
+    flow.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        flow.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    function openCaseFromSlide(slide) {
+      caseTitle.textContent = slide.dataset.caseTitle || 'Case';
+      caseText.textContent = 'Här ser du case-underlaget som visar varför och i vilken ordning projekten bör genomföras.';
+      caseFocus.textContent = slide.dataset.caseFocus || '—';
+      caseBefore.textContent = slide.dataset.caseBefore || '—';
+      caseDelivery.textContent = slide.dataset.caseDelivery || '—';
+      caseKpi.textContent = slide.dataset.caseKpi || '—';
+      caseRisk.textContent = slide.dataset.caseRisk || '—';
+      modal.classList.add('is-open');
+      modal.removeAttribute('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    caseButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        const slide = event.currentTarget.closest('.slide');
+        if (!slide) return;
+        openCaseFromSlide(slide);
+      });
+    });
+
+    function closeCaseModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    closeButton.addEventListener('click', closeCaseModal);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        closeCaseModal();
+      }
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('is-open')) {
+        closeCaseModal();
+      }
+    });
+
+    const loadedContent = window.UppmakeContent ? window.UppmakeContent.loadContent() : {};
+    applySiteContent(loadedContent);
+    updateActiveState();
+  </script>
+</body>
+</html>

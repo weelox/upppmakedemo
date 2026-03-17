@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Om oss | Uppmake Curator & Consulting</title>
+  <style>
+    :root {
+      --bg: #0b0e12;
+      --panel: rgba(8, 10, 14, 0.78);
+      --text: #f3efe8;
+      --muted: #b7b1a6;
+      --line: rgba(255, 255, 255, 0.22);
+      --accent: #f2b65a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      background: rgba(9, 10, 14, 0.9);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .brand {
+      font-size: 17px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .brand a { color: var(--text); text-decoration: none; }
+    .main-nav { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .main-nav a {
+      color: var(--text); text-decoration: none; border: 1px solid var(--line);
+      padding: 9px 14px; border-radius: 999px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em;
+    }
+    .main-nav a:hover, .main-nav a.is-active { border-color: rgba(255,255,255,0.55); background: rgba(255,255,255,0.06); }
+    .page-shell {
+      max-width: 1100px;
+      margin: 32px auto 56px;
+      padding: 0 24px 120px;
+      display: grid;
+      gap: 26px;
+    }
+    .hero {
+      padding: 40px 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(130deg, rgba(242, 182, 90, 0.12), rgba(10, 12, 16, 0.15));
+      border-radius: 12px;
+    }
+    .hero h1 { margin: 0 0 12px; color: var(--accent); font-size: clamp(2rem, 3vw, 3rem); }
+    .hero p { max-width: 74ch; line-height: 1.7; margin: 0 0 16px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px;
+      min-height: 150px;
+    }
+    .card h3 { margin: 0 0 8px; color: #fff; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; }
+    .section-title { margin: 12px 0 4px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; color: #ddd; }
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 18px 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      position: sticky;
+      bottom: 0;
+      background: rgba(11,14,18,0.95);
+    }
+    @media (max-width: 960px) {
+      .top { padding: 18px 14px; flex-direction: column; align-items: flex-start; }
+      .main-nav { width: 100%; overflow-x: auto; flex-wrap: nowrap; gap: 8px; padding-bottom: 6px; }
+      .main-nav::-webkit-scrollbar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><a href="index.html">Uppmake · Curator & Consulting</a></div>
+    <nav class="main-nav" aria-label="Huvudmeny">
+      <a href="index.html">Översikt</a>
+      <a href="about.html">Om oss</a>
+      <a href="method.html">Metodik</a>
+      <a href="services.html">Tjänster</a>
+      <a href="projects.html">Projekt</a>
+      <a href="investors.html">Investerare</a>
+      <a href="contact.html">Kontakt</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <h1>Om oss</h1>
+      <p>Uppmake bygger broar mellan kreativ kvalitet och finansiell disciplin. Vi arbetar professionellt med projekt ur ett investeringsperspektiv där varje fas – från kurering till lansering – har tydliga beslutsunderlag, ansvarsfördelning och mätbara målsättningar.</p>
+      <p>Det betyder en stabilare projektstyrning, bättre genomförande och högre sannolikhet att skapa långsiktig avkastning.</p>
+    </section>
+
+    <p class="section-title">Vår kärnkompetens</p>
+    <section class="grid">
+      <article class="card">
+        <h3>Kuratorisk kvalitetssäkring</h3>
+        <p>Urval, positionering och varumärkesrelevans analyseras med samma stringens som i en portföljgranskning.</p>
+      </article>
+      <article class="card">
+        <h3>Affärs- och riskanalys</h3>
+        <p>Vi bedömer skalbarhet, produktionsrisker, tidsplaner och resursbehov innan resurser allokeras.</p>
+      </article>
+      <article class="card">
+        <h3>Operativ coaching</h3>
+        <p>Vi stöder ledningsteam i strukturering av leveranskedjor och beslutspunkter med tydlig prioriteringsordning.</p>
+      </article>
+    </section>
+
+    <p class="section-title">Arbetsmodell</p>
+    <section class="grid">
+      <article class="card">
+        <h3>Diagnos</h3>
+        <p>Vi kartlägger nuläge: mål, budgetram, beroenden och kvalitetskrav.</p>
+      </article>
+      <article class="card">
+        <h3>Strategi</h3>
+        <p>Vi bygger en konkret handlingsplan med beslutsgates och rapporteringspunkter.</p>
+      </article>
+      <article class="card">
+        <h3>Leverans</h3>
+        <p>Vi följer upp genomfört arbete med standardiserade dokument, milstolpar och ansvarsmatris.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>© Uppmake · Curator & Consulting · Sektion för investerare och projektägare</footer>
+
+  <script>
+    const navLinks = document.querySelectorAll('.main-nav a');
+    const path = window.location.pathname.split('/').pop() || 'about.html';
+    navLinks.forEach((link) => {
+      if (link.getAttribute('href') === path) {
+        link.classList.add('is-active');
+      }
+    });
+  </script>
+</body>
+</html>

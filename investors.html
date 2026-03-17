@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Investerare | Uppmake Curator & Consulting</title>
+  <style>
+    :root {
+      --bg: #0b0e12;
+      --panel: rgba(8, 10, 14, 0.78);
+      --text: #f3efe8;
+      --muted: #b7b1a6;
+      --line: rgba(255, 255, 255, 0.22);
+      --accent: #f2b65a;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); }
+    .top { position: sticky; top: 0; z-index: 50; padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; gap: 18px; background: rgba(9,10,14,.94); border-bottom: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(5px); }
+    .brand { font-size: 17px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+    .brand a { color: var(--text); text-decoration: none; }
+    .main-nav { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .main-nav a { color: var(--text); text-decoration: none; border: 1px solid var(--line); padding: 9px 14px; border-radius: 999px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .main-nav a:hover, .main-nav a.is-active { border-color: rgba(255,255,255,.55); background: rgba(255,255,255,.06); }
+    .page-shell { max-width: 1100px; margin: 30px auto 60px; padding: 0 24px 120px; display: grid; gap: 18px; }
+    h1 { margin: 0; font-size: clamp(2rem, 3vw, 2.6rem); color: var(--accent); }
+    .lead { color: var(--muted); line-height: 1.7; max-width: 78ch; }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      background: var(--panel);
+    }
+    .panel h3 { margin: 0 0 10px; }
+    .panel p, .panel li { color: var(--muted); line-height: 1.65; }
+    .check-list { padding-left: 18px; }
+    .check-list li + li { margin-top: 8px; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .metric { border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+    .metric .value { font-size: 1.8rem; color: #fff; margin-top: 6px; }
+    .metric .label { color: var(--muted); font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; }
+    footer { border-top: 1px solid rgba(255,255,255,.1); padding: 18px; text-align: center; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .14em; }
+    @media (max-width: 960px) {
+      .top { padding: 18px 14px; flex-direction: column; align-items: flex-start; }
+      .main-nav { width: 100%; overflow-x: auto; flex-wrap: nowrap; gap: 8px; }
+      .main-nav::-webkit-scrollbar { display: none; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><a href="index.html">Uppmake · Curator & Consulting</a></div>
+    <nav class="main-nav" aria-label="Huvudmeny">
+      <a href="index.html">Översikt</a>
+      <a href="about.html">Om oss</a>
+      <a href="method.html">Metodik</a>
+      <a href="services.html">Tjänster</a>
+      <a href="projects.html">Projekt</a>
+      <a href="investors.html">Investerare</a>
+      <a href="contact.html">Kontakt</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <h1>Investerare</h1>
+    <p class="lead">Vi hjälper investerare att se och jämföra kompetens, genomförandekraft och risknivå i projekt med en kort och transparent beslutsstruktur.</p>
+
+    <section class="grid">
+      <article class="panel">
+        <h3>Vad ni får i leveransen</h3>
+        <ul class="check-list">
+          <li>Klar investeringsmodell med risktrappa och scenarier.</li>
+          <li>Dokumenterade projektgates med ansvarig kontaktperson.</li>
+          <li>Periodiska rapporter med avvikelser och korrigerande åtgärder.</li>
+          <li>Kompetensmatris per teammedlem och nyckelpartner.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h3>Våra bedömningskriterier</h3>
+        <p>Varje case körs genom fyra dimensioner: kreativ relevans, produktionsekonomi, distributionsförmåga och investeringsbarhet.</p>
+      </article>
+    </section>
+
+    <section class="metrics">
+      <article class="metric">
+        <div class="label">Milstolpar</div>
+        <div class="value">10-15 / kvartal</div>
+      </article>
+      <article class="metric">
+        <div class="label">On track-träffsäkerhet</div>
+        <div class="value">92 %</div>
+      </article>
+      <article class="metric">
+        <div class="label">Projekt som går i fullskala</div>
+        <div class="value">88 %</div>
+      </article>
+      <article class="metric">
+        <div class="label">Snabbt beslutsunderlag</div>
+        <div class="value">72h</div>
+      </article>
+    </section>
+  </main>
+
+  <footer>© Uppmake · Curator & Consulting · Investeringsfokuserad projektstruktur</footer>
+
+  <script>
+    const navLinks = document.querySelectorAll('.main-nav a');
+    const path = window.location.pathname.split('/').pop() || 'investors.html';
+    navLinks.forEach((link) => {
+      if (link.getAttribute('href') === path) link.classList.add('is-active');
+    });
+  </script>
+</body>
+</html>
