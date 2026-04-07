@@ -157,58 +157,6 @@ if (inlineLogoWrap) {
         const svg = inlineLogoWrap.querySelector("svg");
         if (!svg) return;
         svg.classList.add("wam-ref-logo-svg");
-        const paths = Array.from(svg.querySelectorAll("path"));
-        paths.forEach((path, index) => {
-          path.style.opacity = "0";
-          path.style.transform = "translateY(10px)";
-          path.style.transformOrigin = "center";
-          path.style.transition = `opacity 520ms ease ${index * 20}ms, transform 520ms ease ${index * 20}ms`;
-        });
-        requestAnimationFrame(() => {
-          paths.forEach((path) => {
-            path.style.opacity = "1";
-            path.style.transform = "translateY(0)";
-          });
-        });
-
-        const pulsePathGlitch = () => {
-          if (!paths.length) return;
-          const burstCount = Math.max(2, Math.round(paths.length * 0.08));
-          const selected = new Set();
-          while (selected.size < burstCount) {
-            selected.add(Math.floor(Math.random() * paths.length));
-          }
-
-          selected.forEach((pathIndex) => {
-            const target = paths[pathIndex];
-            target.style.transition =
-              "transform 120ms ease, opacity 120ms ease, filter 120ms ease";
-            target.style.transform = `translate(${Math.round((Math.random() - 0.5) * 12)}px, ${Math.round(
-              (Math.random() - 0.5) * 4
-            )}px) skewX(${Math.round((Math.random() - 0.5) * 18)}deg)`;
-            target.style.opacity = "0.78";
-            target.style.filter = "brightness(1.3)";
-          });
-
-          window.setTimeout(() => {
-            selected.forEach((pathIndex) => {
-              const target = paths[pathIndex];
-              target.style.transform = "translateY(0)";
-              target.style.opacity = "1";
-              target.style.filter = "none";
-            });
-          }, 140);
-        };
-
-        const schedulePathGlitch = () => {
-          const delay = 2200 + Math.random() * 3400;
-          window.setTimeout(() => {
-            pulsePathGlitch();
-            schedulePathGlitch();
-          }, delay);
-        };
-
-        schedulePathGlitch();
       })
       .catch(() => {
         /* Keep fallback img if inline fetch is blocked. */
