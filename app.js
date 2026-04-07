@@ -156,7 +156,7 @@ if (inlineLogoWrap) {
         inlineLogoWrap.innerHTML = svgText;
         const svg = inlineLogoWrap.querySelector("svg");
         if (!svg) return;
-        svg.classList.add("wam-ref-logo-svg");
+        svg.classList.add("upm-logo-svg");
 
         const logoMotionAllowed = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (!logoMotionAllowed) return;
@@ -290,7 +290,7 @@ if (inlineLogoWrap) {
 }
 
 const supportsMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const shouldRunBgFx = supportsMotion && (body.classList.contains("home-page") || body.classList.contains("wam-page"));
+const shouldRunBgFx = supportsMotion && (body.classList.contains("home-page") || body.classList.contains("upm-page"));
 
 if (shouldRunBgFx) {
   body.classList.add("has-digital-fx");
