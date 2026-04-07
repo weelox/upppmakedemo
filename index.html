@@ -3,106 +3,585 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sketch Challange</title>
+    <title>UppMAKE | Makerspace Örebro</title>
+    <meta
+      name="description"
+      content="UppMAKE är en kreativ makerspace-förening i Örebro."
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <main class="game-shell" aria-live="polite">
-      <header class="topbar">
-        <h1><span class="wordmark-primary">Sketch</span><span class="wordmark-secondary">Challange</span></h1>
-        <div class="top-actions">
-          <button id="themeToggle" class="btn btn-tertiary" type="button" aria-label="Byt tema">Mörkt tema</button>
-          <button id="langToggle" class="btn btn-tertiary" type="button" aria-label="Byt språk">English</button>
-        </div>
-      </header>
+  <body class="home-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand brand-wordmark" href="#hem" aria-label="UppMAKE start">
+          <img src="orebro-uppmake-logo.svg" alt="UppMAKE logga" />
+        </a>
 
-      <section id="screen-start" class="screen" aria-label="Startskärm" aria-live="polite">
-        <div class="start-actions">
-          <button id="startBtn" class="btn btn-primary" type="button">Starta ny runda</button>
-          <button id="settingsOpenBtn" class="btn btn-secondary" type="button">Inställningar</button>
-        </div>
-      </section>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-label="Öppna meny" data-menu-toggle>
+          <span></span><span></span><span></span>
+        </button>
 
-      <section id="screen-play" class="screen" aria-label="Aktiv runda">
-        <div class="timer-card">
-          <span id="ui-timer-label" class="timer-label">Tid kvar</span>
-          <div class="time-display" id="timeDisplay" aria-live="assertive" aria-atomic="true">02:00</div>
-        </div>
+        <nav class="main-nav" aria-label="Huvudnavigering" data-main-nav>
+          <a href="#hem">Hem</a>
+          <a href="#om-oss">Om oss</a>
+          <a href="#bli-medlem">Bli medlem</a>
+          <a href="#sponsorer">Sponsorer</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+        <a class="header-cta" href="#bli-medlem">BLI MEDLEM</a>
+      </div>
+    </header>
 
-        <div class="prompt-grid">
-          <article class="prompt-card">
-            <p id="prompt1" class="prompt-text"></p>
-          </article>
-          <article class="prompt-card">
-            <p id="prompt2" class="prompt-text"></p>
-          </article>
-          <article class="prompt-card">
-            <p id="prompt3" class="prompt-text"></p>
-          </article>
-        </div>
+    <main>
+      <section class="wam-ref-hero anchor-section" id="hem">
+        <video class="wam-ref-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+          <source src="VIDEOS/0001-0192.mp4" type="video/mp4" />
+          <source src="https://wam.global/wp-content/uploads/2025/11/loop-wam-home.mp4" type="video/mp4" />
+        </video>
+        <div class="wam-ref-overlay" aria-hidden="true"></div>
 
-        <div class="play-actions">
-          <button id="resetBtn" class="btn btn-secondary" type="button">Börja om</button>
-        </div>
-      </section>
-
-      <section id="screen-finished" class="screen" aria-label="Rundan klar">
-        <p id="ui-finished-message" class="finished-message">Tiden är ute!</p>
-        <button id="restartBtn" class="btn btn-secondary" type="button">Börja om</button>
-      </section>
-
-      <section id="screen-settings" class="screen" aria-label="Inställningar">
-        <h2 id="settings-title">Inställningar</h2>
-
-        <div class="settings-block">
-          <label id="settings-category-label" for="settingsCategorySelect">Kategori</label>
-          <select id="settingsCategorySelect">
-            <option value="category1">Kategori 1</option>
-            <option value="category2">Kategori 2</option>
-            <option value="category3">Kategori 3</option>
-          </select>
-          <p id="settings-category-count" class="settings-count" aria-live="polite"></p>
-        </div>
-
-        <div class="settings-block">
-          <label id="manual-label" for="manualPromptInput">Lägg till prompt</label>
-          <div class="prompt-add-row">
-            <input id="manualPromptInput" type="text" maxlength="140" />
-            <button id="manualAddBtn" class="btn btn-secondary" type="button">Lägg till</button>
+        <div class="container wam-ref-inner reveal visible">
+          <div class="wam-ref-logo-wrap" data-inline-svg="Evolving sweden UppMAEKE.svg">
+            <img class="wam-ref-logo" src="Evolving sweden UppMAEKE.svg" alt="UppMAKE" />
+          </div>
+          <div class="wam-ref-actions">
+            <a class="wam-btn wam-btn-primary" href="#bli-medlem">Bli medlem</a>
+            <a class="wam-btn wam-btn-secondary" href="#om-oss">Läs om oss</a>
           </div>
         </div>
+      </section>
 
-        <div class="settings-block">
-          <p id="settings-generate-title" class="settings-subtitle">Generera nya förslag</p>
-          <button id="generatePromptsBtn" class="btn btn-secondary" type="button">Generera 10 nya prompts</button>
-          <div id="generatedList" class="prompt-list prompt-gallery" aria-live="polite"></div>
-          <button id="applyGeneratedBtn" class="btn btn-primary" type="button">Lägg till valda</button>
-        </div>
-
-        <div class="settings-block">
-          <p id="settings-custom-title" class="settings-subtitle">Mina prompts i valda kategorin</p>
-          <div id="customList" class="prompt-list"></div>
-          <button id="deleteSelectedBtn" class="btn btn-secondary" type="button">Ta bort valda</button>
-        </div>
-
-        <div class="settings-block">
-          <p id="settings-backup-title" class="settings-subtitle">Säkerhetskopiering</p>
-          <div class="prompt-add-row">
-            <button id="saveLocalBtn" class="btn btn-secondary" type="button">Spara på din enhet</button>
-            <button id="saveAllBtn" class="btn btn-secondary" type="button">Spara för alla</button>
+      <section class="wam-ref-section reveal anchor-section" id="om-oss">
+        <div class="container wam-ref-who">
+          <div>
+            <p class="wam-ref-kicker">Who are we?</p>
+            <h2>Vi är en ideell plattform där teknik möter kreativitet.</h2>
           </div>
-          <textarea id="backupPayloadInput" class="backup-textarea" rows="4" placeholder="Din delningskod visas här" aria-label="Dela-kod"></textarea>
-          <p id="backupStatus" class="backup-status"></p>
+          <p>
+            Uppfinnare-Makerspace Örebro är en gemensam verkstad där människor möts för att bygga, lära och utveckla
+            idéer tillsammans. Vi erbjuder verktyg, maskiner och en inkluderande gemenskap för skapande inom flera
+            områden.
+          </p>
         </div>
-
-        <div class="settings-block">
-          <p id="settings-reset-title" class="settings-subtitle">Återställ prompts</p>
-          <button id="resetPromptsBtn" class="btn btn-tertiary" type="button">Återställ till grundinställningar</button>
+        <div class="container wam-ref-subnav">
+          <a href="#lokalen">Lokalen</a>
+          <a href="#faq">FAQ</a>
+          <a href="#styrelsen">Ansvariga / Styrelsen</a>
+          <a href="#stadgar">Stadgar</a>
         </div>
+      </section>
 
-        <button id="closeSettingsBtn" class="btn btn-primary" type="button">Tillbaka</button>
+      <section class="wam-ref-section wam-ref-section-dark reveal">
+        <div class="container wam-ref-head">
+          <h2>Utforska UppMAKE</h2>
+          <a href="#kontakt">Besök oss i Örebro →</a>
+        </div>
+        <div class="container">
+          <ul class="wam-ref-solutions">
+            <li>
+              <a href="#bli-medlem">
+                <span class="num">01</span>
+                <span class="txt">Bli medlem</span>
+                <span class="arr">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="#om-oss">
+                <span class="num">02</span>
+                <span class="txt">Verkstad och community</span>
+                <span class="arr">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="#sponsorer">
+                <span class="num">03</span>
+                <span class="txt">Sponsorer</span>
+                <span class="arr">→</span>
+              </a>
+            </li>
+            <li>
+              <a href="#kontakt">
+                <span class="num">04</span>
+                <span class="txt">Kontakt</span>
+                <span class="arr">→</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="wam-ref-section reveal anchor-section" id="bli-medlem">
+        <div class="container wam-ref-membership">
+          <div>
+            <p class="wam-ref-kicker">Membership</p>
+            <h2>Bli medlem i UppMAKE</h2>
+            <p class="wam-ref-body">
+              Medlemsavgiften är 200 kr per år. Efter registrering bokar du en medlemsintroduktion där vi går igenom
+              lokaler, arbetssätt och säker användning av utrustningen.
+            </p>
+            <div class="wam-ref-actions">
+              <a class="wam-btn wam-btn-primary" href="https://forms.gle/B6gX9d2P5Et4p47u5" target="_blank" rel="noreferrer">Bli medlem nu ↗</a>
+              <a class="wam-btn wam-btn-secondary" href="https://zcal.co/i/0KXVAcM8" target="_blank" rel="noreferrer">Boka introduktion ↗</a>
+            </div>
+          </div>
+          <ul class="wam-ref-membership-steps">
+            <li><span>01</span><p>Fyll i formuläret för medlemskap.</p></li>
+            <li><span>02</span><p>Boka en introduktionstid i kalendern.</p></li>
+            <li><span>03</span><p>Kom igång med projekt i vår verkstad i Vivalla.</p></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="wam-ref-section wam-ref-section-dark reveal">
+        <div class="container wam-ref-head">
+          <h2>Verkstad och fokusområden</h2>
+        </div>
+        <div class="container">
+          <ul class="wam-ref-lines">
+            <li>3D-skrivare, laserskärare, CNC-maskiner och elektronikrum.</li>
+            <li>Trä- och metallbearbetning, textil och cykelreparationer.</li>
+            <li>Basutbildningar inom CAD, elektronik, programmering och svetsteori.</li>
+            <li>Veckovisa öppettider i makerspacet samt workshops och events.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="wam-ref-section reveal anchor-section" id="lokalen">
+        <div class="container wam-ref-head">
+          <h2>Lokalen</h2>
+          <a href="#kontakt">Diktargatan 25, Örebro →</a>
+        </div>
+        <div class="container">
+          <p class="wam-ref-body">
+            Vi befinner oss i Trainstations lokaler i Vivalla. Här arbetar vi praktiskt med verktyg, maskiner och
+            projekt i en miljö byggd för samarbete.
+          </p>
+          <div class="wam-ref-location-gallery">
+            <img src="https://www.uppmake.se/location/IMG20220807161946_resized.jpg" alt="UppMAKE lokal" />
+            <img src="https://www.uppmake.se/location/IMG20240714164012_resized.jpg" alt="UppMAKE verkstad" />
+            <img src="https://www.uppmake.se/location/IMG_20220331_082817_resized.jpg" alt="UppMAKE maskiner" />
+          </div>
+        </div>
+      </section>
+
+      <section class="wam-ref-section wam-ref-section-dark reveal anchor-section" id="faq">
+        <div class="container wam-ref-head">
+          <h2>FAQ</h2>
+          <a href="#bli-medlem">Bli medlem →</a>
+        </div>
+        <div class="container">
+          <div class="wam-ref-faq">
+            <details>
+              <summary>Vad är ett makerspace?</summary>
+              <p>
+                Ett makerspace är en gemensam verkstad där människor möts och skapar tillsammans med verktyg för bland
+                annat elektronik, programmering, trä- och metallarbete.
+              </p>
+            </details>
+            <details>
+              <summary>Hur blir jag medlem och vad kostar det?</summary>
+              <p>
+                Du fyller i medlemsansökan och betalar medlemsavgiften. Medlemskapet kostar 200 kronor per år och följs
+                av en introduktion.
+              </p>
+            </details>
+            <details>
+              <summary>Vilka verktyg och maskiner har ni?</summary>
+              <p>
+                Vi har bland annat 3D-skrivare, laserskärare, CNC-maskiner, elektronikarbetsstationer och verktyg för
+                träbearbetning.
+              </p>
+            </details>
+            <details>
+              <summary>Är det öppet för alla?</summary>
+              <p>
+                Ja, alla över 16 år är välkomna. Vi strävar efter en inkluderande och kreativ miljö för olika
+                erfarenhetsnivåer.
+              </p>
+            </details>
+            <details>
+              <summary>Har ni regler för maskinanvändning?</summary>
+              <p>
+                Ja. För säkerhet och underhåll krävs introduktion och utbildning innan maskinerna används.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="wam-ref-section reveal anchor-section" id="styrelsen">
+        <div class="container wam-ref-head">
+          <h2>Ansvariga / Styrelsen</h2>
+          <a href="https://www.uppmake.se/board/" target="_blank" rel="noreferrer">Se full presentation ↗</a>
+        </div>
+        <div class="container">
+          <div class="wam-ref-board-accordion">
+            <details>
+              <summary>
+                <span class="num">01</span>
+                <span class="txt">Ordförande — Adrian Hällzon</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <img class="wam-ref-board-photo" src="https://www.uppmake.se/img/Adrian_Hallzon.png" alt="Adrian Hällzon" />
+                <div>
+                  <p>
+                    Drivs av samhällsutveckling inom innovation och teknik. Nyckelperson i utveckling av innovativa miljöer
+                    i makerrörelsen i Örebro, med fokus på att koppla ihop människor och idéer.
+                  </p>
+                  <p>Nuvarande arbete: Verksamhetsutvecklare och digital pedagog.</p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">02</span>
+                <span class="txt">Kassör — August Hultman</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <img class="wam-ref-board-photo" src="https://www.uppmake.se/img/August_Hultman.jpg" alt="August Hultman" />
+                <div>
+                  <p>
+                    Egenföretagande konsult och elektronikingenjör som ansvarar för föreningens ekonomi. Engagerad i
+                    mekanik, elektronik och 3D-utskrifter.
+                  </p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">03</span>
+                <span class="txt">PR & sociala medier — Jenny Larsson</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <img class="wam-ref-board-photo" src="https://www.uppmake.se/img/jenny.jpeg" alt="Jenny Larsson" />
+                <div>
+                  <p>
+                    Ansvarar för kommunikation i sociala kanaler. Gillar fotografering samt trä- och läderbearbetning och
+                    bidrar till att visa upp verksamheten utåt.
+                  </p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">04</span>
+                <span class="txt">Kassör — Oscar Fransson</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <div>
+                  <p>Stöttar ekonomiarbetet och föreningens löpande administration.</p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">05</span>
+                <span class="txt">Sekreterare — Markus Willander</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <div>
+                  <p>Ansvarar för struktur, dokumentation och uppföljning av styrelsearbetet.</p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">06</span>
+                <span class="txt">Ledamot — Mikael Borell</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <div>
+                  <p>Bidrar i styrelsearbetet med fokus på utveckling av verksamheten.</p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">07</span>
+                <span class="txt">Ledamot — Per Seterbakken</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <div>
+                  <p>Medverkar i planering och genomförande av föreningens aktiviteter.</p>
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary>
+                <span class="num">08</span>
+                <span class="txt">Hemsida — Mattias Larsson Sköld</span>
+              </summary>
+              <div class="wam-ref-board-content">
+                <img class="wam-ref-board-photo" src="https://www.uppmake.se/img/Mattias.jpg" alt="Mattias Larsson Sköld" />
+                <div>
+                  <p>
+                    Ansvarar för webb och teknik kring den digitala närvaron. Arbetar till vardags med mjukvaruutveckling
+                    och utbildning.
+                  </p>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="wam-ref-section wam-ref-section-dark reveal anchor-section" id="stadgar">
+        <div class="container wam-ref-head">
+          <h2>Stadgar</h2>
+          <a href="https://www.uppmake.se/statutes/" target="_blank" rel="noreferrer">Läs fullständig version ↗</a>
+        </div>
+        <div class="container">
+          <p class="wam-ref-body">
+            Stadgarna (uppdaterade 2024-01-16) beskriver föreningens namn, ändamål, medlemskap, styrelse, beslutsordning
+            och hur årsstämman går till.
+          </p>
+          <details class="wam-ref-statutes-toggle">
+            <summary>
+              <span class="wam-ref-statutes-show">Visa stadgar</span>
+              <span class="wam-ref-statutes-hide">Dölj stadgar</span>
+            </summary>
+            <div class="wam-ref-statutes">
+            <details>
+              <summary>§1 Föreningens namn, säte samt organisationsnummer</summary>
+              <p>
+                Föreningens fullständiga namn är Uppfinnare-Makerspace Örebro. Föreningen har sitt säte i Örebro och
+                organisationsnummer 875002-0730.
+              </p>
+            </details>
+
+            <details>
+              <summary>§2 Ändamål</summary>
+              <p>
+                Föreningen verkar för kamratcirklar och kurser inom mekanik, elektronik och andra tekniska områden.
+                Föreningen ska främja medlemmarnas innovativa intressen och vara en allmän träffpunkt för både aktiva och
+                passiva medlemmar.
+              </p>
+              <p>
+                Föreningen ska aktivt motverka diskriminering på grund av kön, könsöverskridande identitet eller uttryck,
+                etnisk tillhörighet, religion eller annan trosuppfattning, funktionsnedsättning, sexuell läggning eller
+                ålder.
+              </p>
+            </details>
+
+            <details>
+              <summary>§3 Föreningsform samt oberoende</summary>
+              <p>Föreningen är en ideell förening som är religiöst och partipolitiskt oberoende.</p>
+            </details>
+
+            <details>
+              <summary>§4 Verksamhetsår</summary>
+              <p>Föreningens verksamhetsår är kalenderår.</p>
+            </details>
+
+            <details>
+              <summary>§5 Medlemmar samt medlemsavgift</summary>
+              <p>
+                En person kan antas som medlem om den godkänner stadgarna, vill verka för föreningens syfte och aktivt tar
+                ställning för medlemskap genom att betala medlemsavgiften.
+              </p>
+              <p>
+                Medlemsavgiften fastställs varje år på årsstämman och ska betalas senast i februari, eller senast två
+                veckor efter årsstämman. Medlem som allvarligt skadar föreningen kan stängas av av styrelsen eller
+                årsstämman.
+              </p>
+            </details>
+
+            <details>
+              <summary>§6 Styrelse samt beslutande organ</summary>
+              <p>
+                Beslutande organ är styrelsen samt årsstämma eller extra årsstämma. Styrelsen väljs av medlemmarna på
+                årsstämman.
+              </p>
+              <p>
+                Styrelsen ska som grund bestå av ordförande (1 år), kassör (2 år) och sekreterare (1 år). Vid lika
+                röstetal i styrelsen har ordföranden utslagsröst.
+              </p>
+            </details>
+
+            <details>
+              <summary>§7 Firmateckning</summary>
+              <p>
+                Föreningen tecknas av styrelsens ordförande samt kassör, var för sig, alternativt av en eller flera av
+                styrelsen utsedda myndiga personer. Utsedd person ska återrapportera till styrelsen.
+              </p>
+            </details>
+
+            <details>
+              <summary>§8 Stadgeändring</summary>
+              <p>
+                För ändring av stadgarna krävs beslut på två på varandra följande stämmor med minst en månads mellanrum,
+                varav en ska vara årsstämma, med minst 2/3 av avgivna röster.
+              </p>
+            </details>
+
+            <details>
+              <summary>§9 Upplösning av föreningen</summary>
+              <p>
+                För upplösning krävs beslut på två på varandra följande årsstämmor med minst tre månaders mellanrum och
+                minst 2/3 av avgivna röster.
+              </p>
+              <p>
+                Föreningens tillgångar ska först användas till skulder och därefter skänkas till ändamål förenliga med
+                föreningens syfte. Mottagare beslutas av sista årsstämman.
+              </p>
+            </details>
+
+            <details>
+              <summary>§10 Tidpunkt och kallelse för årsstämma</summary>
+              <p>
+                Årsstämma hålls normalt i februari eller mars. Kallelse skickas via e-post senast tre veckor före stämman.
+                Väsentliga frågor, som stadgeändring eller upplösning, ska anges i kallelsen.
+              </p>
+              <p>
+                Verksamhetsberättelse, revisionsberättelse, verksamhetsplan, budget och motioner ska vara tillgängliga för
+                medlemmarna senast en vecka före årsstämman.
+              </p>
+            </details>
+
+            <details>
+              <summary>§11 Motioner och förslag till årsstämma</summary>
+              <p>
+                Motioner kan skickas in under året, dock senast två veckor före årsstämma eller extra årsstämma. Styrelsen
+                ska skriva yttrande för varje motion senast en vecka innan stämman.
+              </p>
+            </details>
+
+            <details>
+              <summary>§12 Rösträtt, beslut och omröstning på årsstämma</summary>
+              <p>
+                Medlemmar som varit medlemmar de senaste 30 dagarna har rösträtt. Beslut fattas med acklamation eller
+                omröstning. Vid lika röstetal har ordföranden utslagsröst om ordföranden är röstberättigad.
+              </p>
+            </details>
+
+            <details>
+              <summary>§13 Valbarhet</summary>
+              <p>
+                Valbar till styrelsen är röstberättigad medlem. Styrelsemedlem samt anhörig till styrelsemedlem är inte
+                valbar till revisor.
+              </p>
+            </details>
+
+            <details>
+              <summary>§14 Årsstämmans dagordning</summary>
+              <ul>
+                <li>§1 Årsstämmans öppnande</li>
+                <li>§2 Fastställande av röstlängd</li>
+                <li>§3 Val av ordförande, vice ordförande och sekreterare för stämman</li>
+                <li>§4 Val av justerare och rösträknare</li>
+                <li>§5 Fråga om årsstämman utlysts enligt stadgarna</li>
+                <li>§6 Godkännande av dagordningen</li>
+                <li>§7 Föredragning av verksamhetsberättelse och ekonomisk rapport</li>
+                <li>§8 Revisionsberättelse</li>
+                <li>§9 Fråga om ansvarsfrihet för styrelsen</li>
+                <li>§10 Val av styrelseledamöter och revisorer (ordförande, kassör, ledamöter, revisor)</li>
+                <li>§11 Fastställande av medlemsavgift</li>
+                <li>§12 Verksamhetsplan</li>
+                <li>§13 Budget</li>
+                <li>§14 Inkomna motioner och propositioner</li>
+                <li>§15 Stämmans avslutande</li>
+              </ul>
+            </details>
+
+            <details>
+              <summary>§15 Extra årsstämma</summary>
+              <p>
+                Styrelsen kan kalla till extra årsstämma när som helst under året. Styrelsen ska också kalla till extra
+                årsstämma om revisorn eller minst 10% av medlemmarna begär det.
+              </p>
+            </details>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="wam-ref-section reveal anchor-section" id="sponsorer">
+        <div class="container wam-ref-head">
+          <h2>Sponsorer</h2>
+          <a href="#kontakt">Vill du samarbeta? →</a>
+        </div>
+        <div class="container wam-ref-logos">
+          <figure><img src="https://www.uppmake.se/img/spons/blomqvistsvarven-img1.jpg" alt="Blomqvistsvarven" /></figure>
+          <figure><img src="https://www.uppmake.se/img/spons/catosaurus_logo_vitBG.png" alt="Catosaurus" /></figure>
+          <figure><img src="https://www.uppmake.se/img/spons/pow_1.jpg" alt="POW" /></figure>
+          <figure><img src="https://www.uppmake.se/img/spons/yubico.png" alt="Yubico" /></figure>
+        </div>
+        <div class="container wam-ref-sponsor-note">
+          <p>Vill du stötta föreningen som företag eller privatperson? Vi välkomnar både sponsorskap och bidrag via Swish.</p>
+          <img src="https://www.uppmake.se/img/swish-small.png" alt="Swish för stöd till UppMAKE" />
+        </div>
+      </section>
+
+      <section class="wam-ref-section wam-ref-section-dark reveal anchor-section" id="kontakt">
+        <div class="container wam-ref-head">
+          <h2>Kontakt</h2>
+          <a href="mailto:kontakt@uppmake.se">kontakt@uppmake.se ↗</a>
+        </div>
+        <div class="container">
+          <ul class="wam-ref-contact-list">
+            <li>
+              <a href="mailto:kontakt@uppmake.se">
+                <span class="num">01</span>
+                <span class="txt">kontakt@uppmake.se</span>
+                <span class="arr">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/uppmake" target="_blank" rel="noreferrer">
+                <span class="num">02</span>
+                <span class="txt">github.com/uppmake</span>
+                <span class="arr">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/orebromakerspace" target="_blank" rel="noreferrer">
+                <span class="num">03</span>
+                <span class="txt">facebook.com/orebromakerspace</span>
+                <span class="arr">↗</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/orebromakerspace/" target="_blank" rel="noreferrer">
+                <span class="num">04</span>
+                <span class="txt">@orebromakerspace</span>
+                <span class="arr">↗</span>
+              </a>
+            </li>
+          </ul>
+          <div class="wam-ref-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2077.037540929749!2d15.211346116208364!3d59.27435588162832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465c175d0dc9465b%3A0x8f1e99f5d5c55d44!2sDiktargatan%2025%2C%20703%2070%20%C3%96rebro!5e0!3m2!1ssv!2sse!4v1686766318904!5m2!1ssv!2sse"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Karta till UppMAKE"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <section class="wam-ref-section wam-ref-cta reveal">
+        <div class="container">
+          <h2>Redo att skapa med oss?</h2>
+          <p>Diktargatan 25, Örebro. Starta med medlemskap eller hör av dig direkt.</p>
+          <div class="wam-ref-actions" style="margin-top: 1rem">
+            <a class="wam-btn wam-btn-primary" href="#bli-medlem">Kom igång</a>
+            <a class="wam-btn wam-btn-secondary" href="#kontakt">Kontakta oss</a>
+          </div>
+        </div>
       </section>
     </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">        <span>Design av UppMAKE members</span>
+      </div>
+    </footer>
 
     <script src="app.js" defer></script>
   </body>

@@ -1,1016 +1,531 @@
-const basePrompts = {
-  sv: {
-    category1: [
-      "Har tre huvuden",
-      "Är självlysande",
-      "Sitter på toa",
-      "Missar bussen",
-      "Spelar trummor",
-      "Sitter i en skön stol",
-      "Har kaktushänder",
-      "Är tyngdlös",
-      "Är genomskinlig",
-      "Har änglavingar",
-      "Är en jätte",
-      "Har ett ansikte på magen",
-      "Är lika stor som en myra",
-      "Är leopardmönstrad",
-      "Är hälften häst",
-      "Är zebramönstrad",
-      "Har en kropp av glas",
-      "Har en valfena",
-      "Har tentakler",
-      "Är en krabba",
-      "Har 4 magar",
-      "Är hälften struts",
-      "Har ormar istället för hår",
-      "Är underjordisk",
-      "Är täckt av päls",
-      "Är taggig",
-      "Är en noshörning",
-      "Är hälften fiskmås",
-      "Är en seriefigur",
-      "Är kamouflerad",
-      "Är en sjöjungfru",
-      "Är ett berg"
-    ],
-    category2: [
-      "Åker skridskor",
-      "Kör en bil",
-      "Ute på vandring",
-      "Läser en bok",
-      "Sitter vid datorn",
-      "Sjunger i en mikrofon",
-      "Städar toaletten",
-      "Spelar gitarr",
-      "Kokar kaffe",
-      "Läser tidningen",
-      "Ute och cyklar",
-      "Spelar trumpet",
-      "Åker rullskridskor",
-      "Spelar dragspel",
-      "Ror en båt",
-      "Bär på ved",
-      "Klipper gräsmattan",
-      "Gräver en grop",
-      "Bär på ett svärd",
-      "Sover gott",
-      "Håller i en katt",
-      "Är ute med hunden",
-      "Sitter på en gunga",
-      "Äter spaghetti",
-      "Vattnar blommor",
-      "Skalar en apelsin"
-    ],
-    category3: [
-      "Har glasögon",
-      "Har buskiga ögonbryn",
-      "Har långt hår",
-      "Bär en stor jacka",
-      "Har stort skägg",
-      "Har en stickad tröja",
-      "Har en stor hatt",
-      "Har tajta byxor",
-      "Har en liten hatt",
-      "Har 2 hundar",
-      "Har ett fint leende",
-      "Har färgglada kläder",
-      "Har randig pyjamas",
-      "Har clownsmink",
-      "Har kepsen bak och fram",
-      "Är ett barn",
-      "Har regnkläder",
-      "Är väldigt gammal",
-      "Har en stor mustasch",
-      "Har en blommig sjal",
-      "Har långa flätor",
-      "Har många halsband",
-      "Har 4 ryggsäckar",
-      "Har klackskor",
-      "Har många tatueringar",
-      "Bär hip hop-kläder"
-    ]
-  },
-  en: {
-    category1: [
-      "Has three heads",
-      "Is self-luminous",
-      "Is sitting on the toilet",
-      "Misses the bus",
-      "Is playing drums",
-      "Sits in a comfy chair",
-      "Has cactus hands",
-      "Is weightless",
-      "Is transparent",
-      "Has angel wings",
-      "Is a giant",
-      "Has a face on the stomach",
-      "Is as small as an ant",
-      "Is leopard-patterned",
-      "Is half horse",
-      "Is zebra-patterned",
-      "Has a body made of glass",
-      "Has a whale fin",
-      "Has tentacles",
-      "Is a crab",
-      "Has four stomachs",
-      "Is half ostrich",
-      "Has snakes instead of hair",
-      "Is underground",
-      "Is covered in fur",
-      "Is spiky",
-      "Is a rhinoceros",
-      "Is half seagull",
-      "Is a cartoon character",
-      "Is camouflaged",
-      "Is a mermaid",
-      "Is a mountain"
-    ],
-    category2: [
-      "Is ice skating",
-      "Is driving a car",
-      "Is out hiking",
-      "Is reading a book",
-      "Is at a computer",
-      "Is singing into a microphone",
-      "Is cleaning the toilet",
-      "Is playing guitar",
-      "Is making coffee",
-      "Is reading the newspaper",
-      "Is biking outside",
-      "Is playing trumpet",
-      "Is roller skating",
-      "Is playing accordion",
-      "Is rowing a boat",
-      "Is carrying firewood",
-      "Is mowing the lawn",
-      "Is digging a hole",
-      "Is carrying a sword",
-      "Is getting a good sleep",
-      "Is holding a cat",
-      "Is walking the dog",
-      "Is on a swing",
-      "Is eating spaghetti",
-      "Is watering flowers",
-      "Is peeling an orange"
-    ],
-    category3: [
-      "Has glasses",
-      "Has bushy eyebrows",
-      "Has long hair",
-      "Wears a big coat",
-      "Has a big beard",
-      "Is wearing a knitted sweater",
-      "Wears a big hat",
-      "Wears tight pants",
-      "Wears a small hat",
-      "Has two dogs",
-      "Has a nice smile",
-      "Wears colorful clothes",
-      "Wears striped pajamas",
-      "Has clown makeup",
-      "Wears a backwards cap",
-      "Is a child",
-      "Is wearing rain clothes",
-      "Is very old",
-      "Has a large mustache",
-      "Has a floral scarf",
-      "Has long braids",
-      "Has many necklaces",
-      "Has four backpacks",
-      "Wears high-heeled shoes",
-      "Has many tattoos",
-      "Wears hip-hop clothing"
-    ]
-  }
-};
+const body = document.body;
+const menuToggle = document.querySelector("[data-menu-toggle]");
+const nav = document.querySelector("[data-main-nav]");
+const navLinks = Array.from(document.querySelectorAll("[data-main-nav] a"));
+const yearEl = document.querySelector("[data-year]");
 
-const promptSources = {
-  sv: {
-    has: ["tre huvuden", "ett regnbågsregn", "en osynlig rygg", "en fjäderdräkt", "en glittrig ö", "en kattnos", "en osannolik energi", "en svävande cirkel", "långpennor", "ett hemligt instrument", "en osynlig ryggsäck", "en teaternäsa", "en månstubbe", "tre röster"],
-    state: ["under vattnet", "mycket glad", "helt lugn", "på väg till månen", "överraskad", "extremt snabb", "nästan genomskinlig", "fylld av glitter", "helt stilla", "halv elektrisk"],
-    do: ["sjunger jazz", "spelar pingisboll", "målarmar i luften", "snurrar runt i timmar", "är ute med sin igelkott", "stirrar på en vägg", "byter hatt", "dricker regn", "dansar utan musik", "drömmer vilt", "bygger en bro av skumgummi", "vinner en osynlig tävling"]
-  },
-  en: {
-    has: ["three glowing horns", "an umbrella crown", "a hidden engine", "a bright backpack", "a tiny umbrella", "a velvet coat", "a mirror beard", "a pocket universe", "a zipper in the elbow", "three extra arms", "a moonlit glow", "an invisible cape", "an extra sock pair"],
-    state: ["under the sea", "too cheerful", "completely still", "half in dream mode", "full of glitter", "very confident", "almost transparent", "very impatient", "astronaut-calm", "strangely balanced"],
-    do: ["singing jazz", "juggling pencils", "building a tiny house", "drawing circles", "walking with a penguin", "wearing glitter boots", "carrying a map", "whispering to the sky", "folding a flag", "dancing with no music", "inventing a new sport", "rehearsing dramatic exits"]
-  }
-};
-
-const generatedPromptCount = 10;
-const STORAGE_KEY = "sketchCustomPrompts";
-const BACKUP_CODE = "sketch4life";
-const MAX_CUSTOM_PROMPTS_PER_CATEGORY = 400;
-
-const ROUND_SECONDS = 120;
-
-const startBtn = document.getElementById("startBtn");
-const settingsOpenBtn = document.getElementById("settingsOpenBtn");
-const restartBtn = document.getElementById("restartBtn");
-const resetBtn = document.getElementById("resetBtn");
-const themeToggle = document.getElementById("themeToggle");
-const langToggle = document.getElementById("langToggle");
-const timerLabelEl = document.getElementById("ui-timer-label");
-const finishedMessageEl = document.getElementById("ui-finished-message");
-
-const screenStart = document.getElementById("screen-start");
-const screenPlay = document.getElementById("screen-play");
-const screenFinished = document.getElementById("screen-finished");
-const screenSettings = document.getElementById("screen-settings");
-
-const timeDisplay = document.getElementById("timeDisplay");
-const promptEls = [
-  document.getElementById("prompt1"),
-  document.getElementById("prompt2"),
-  document.getElementById("prompt3")
-];
-
-const playCategoryMap = [
-  { key: "category1", label: "category1" },
-  { key: "category2", label: "category2" },
-  { key: "category3", label: "category3" }
-];
-
-const settingsCategorySelect = document.getElementById("settingsCategorySelect");
-const manualPromptInput = document.getElementById("manualPromptInput");
-const manualAddBtn = document.getElementById("manualAddBtn");
-const generatePromptsBtn = document.getElementById("generatePromptsBtn");
-const generatedList = document.getElementById("generatedList");
-const applyGeneratedBtn = document.getElementById("applyGeneratedBtn");
-const customList = document.getElementById("customList");
-const deleteSelectedBtn = document.getElementById("deleteSelectedBtn");
-const closeSettingsBtn = document.getElementById("closeSettingsBtn");
-const saveLocalBtn = document.getElementById("saveLocalBtn");
-const saveAllBtn = document.getElementById("saveAllBtn");
-const backupPayloadInput = document.getElementById("backupPayloadInput");
-const backupStatus = document.getElementById("backupStatus");
-const settingsCategoryCount = document.getElementById("settings-category-count");
-const resetPromptsBtn = document.getElementById("resetPromptsBtn");
-
-const settingsTitle = document.getElementById("settings-title");
-const settingsCategoryLabel = document.getElementById("settings-category-label");
-const manualLabel = document.getElementById("manual-label");
-const settingsGenerateTitle = document.getElementById("settings-generate-title");
-const settingsCustomTitle = document.getElementById("settings-custom-title");
-const settingsResetTitle = document.getElementById("settings-reset-title");
-
-const i18n = {
-  sv: {
-    lang: "sv",
-    title: "Sketch Challange",
-    themeButtonLight: "Mörkt tema",
-    themeButtonDark: "Ljust tema",
-    themeAriaLabel: "Byt tema",
-    languageButtonText: "English",
-    languageAriaLabel: "Byt språk",
-    startButton: "Starta ny runda",
-    resetButton: "Börja om",
-    timerLabel: "Tid kvar",
-    finishedMessage: "Tiden är ute!",
-    screenStartLabel: "Startskärm",
-    screenPlayLabel: "Aktiv runda",
-    screenFinishedLabel: "Rundan klar",
-    screenSettingsLabel: "Inställningar",
-    settingsTitle: "Inställningar",
-    settingsCategoryLabel: "Kategori",
-    settingsCategoryNames: ["Kategori 1", "Kategori 2", "Kategori 3"],
-    manualLabel: "Lägg till prompt",
-    manualAddButton: "Lägg till",
-    manualPlaceholder: "Skriv in en egen prompt och tryck lägg till",
-    categoryCount: "Mina prompts i {name}: {count}/{max}",
-    maxLimitReached: "Max 400 prompts per kategori är nått",
-    resetPromptsTitle: "Återställ prompts",
-    resetPromptsButton: "Återställ till grundinställningar",
-    resetPromptsConfirm: "Ta bort alla egna prompts och återgå till grundprompts?",
-    backupTitle: "Säkerhetskopiering",
-    saveLocalButton: "Spara på din enhet",
-    saveAllButton: "Spara för alla",
-    backupPlaceholder: "Din delningskod visas här",
-    backupStatusLocal: "Backup sparad på din enhet",
-    backupStatusUnlocked: "Kod godkänd",
-    backupStatusDenied: "Fel kod",
-    backupStatusCopied: "Delningskod kopierad till urklipp",
-    backupDialogLabel: "Ange kod för att spara för alla",
-    generateTitle: "Generera nya förslag",
-    generateButton: "Generera 10 nya prompts",
-    applyGenerated: "Lägg till valda",
-    noNewSelected: "Inga nya valda prompts att lägga till",
-    customTitle: "Mina prompts i valda kategorin",
-    deleteSelected: "Ta bort valda",
-    openSettings: "Inställningar",
-    closeSettings: "Tillbaka",
-    noItems: "Inga förslag ännu"
-  },
-  en: {
-    lang: "en",
-    title: "Sketch Challange",
-    themeButtonLight: "Dark theme",
-    themeButtonDark: "Light theme",
-    themeAriaLabel: "Toggle theme",
-    languageButtonText: "Svenska",
-    languageAriaLabel: "Change language",
-    startButton: "Start new round",
-    resetButton: "Reset",
-    timerLabel: "Time left",
-    finishedMessage: "Time is up!",
-    screenStartLabel: "Start screen",
-    screenPlayLabel: "Active round",
-    screenFinishedLabel: "Round finished",
-    screenSettingsLabel: "Settings",
-    settingsTitle: "Settings",
-    settingsCategoryLabel: "Category",
-    settingsCategoryNames: ["Category 1", "Category 2", "Category 3"],
-    manualLabel: "Add prompt",
-    manualAddButton: "Add",
-    manualPlaceholder: "Type your own prompt and press add",
-    categoryCount: "{name}: {count}/{max} custom prompts",
-    maxLimitReached: "Max 400 prompts per category reached",
-    resetPromptsTitle: "Reset prompts",
-    resetPromptsButton: "Reset to defaults",
-    resetPromptsConfirm: "Remove all custom prompts and restore default prompts?",
-    backupTitle: "Backup",
-    saveLocalButton: "Save on your device",
-    saveAllButton: "Save for everyone",
-    backupPlaceholder: "Your share code will appear here",
-    backupStatusLocal: "Backup saved on your device",
-    backupStatusUnlocked: "Code accepted",
-    backupStatusDenied: "Wrong code",
-    backupStatusCopied: "Share code copied to clipboard",
-    backupDialogLabel: "Enter code to save for everyone",
-    generateTitle: "Generate new suggestions",
-    generateButton: "Generate 10 prompts",
-    applyGenerated: "Add selected",
-    noNewSelected: "No new selected prompts to add",
-    customTitle: "My prompts in selected category",
-    deleteSelected: "Delete selected",
-    openSettings: "Settings",
-    closeSettings: "Back",
-    noItems: "No items yet"
-  }
-};
-
-const startDefaults = {
-  sv: { category1: [], category2: [], category3: [] },
-  en: { category1: [], category2: [], category3: [] }
-};
-
-function clone(obj) {
-  return JSON.parse(JSON.stringify(obj));
+if (yearEl) {
+  yearEl.textContent = String(new Date().getFullYear());
 }
 
-let customPrompts = loadCustomPrompts();
+if (menuToggle && nav) {
+  menuToggle.addEventListener("click", () => {
+    const open = body.classList.toggle("nav-open");
+    menuToggle.setAttribute("aria-expanded", String(open));
+  });
 
-function reloadCustomPrompts() {
-  customPrompts = loadCustomPrompts();
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      body.classList.remove("nav-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!body.classList.contains("nav-open")) return;
+    if (!nav.contains(event.target) && !menuToggle.contains(event.target)) {
+      body.classList.remove("nav-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+  });
 }
 
-function loadCustomPrompts() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return clone(startDefaults);
-    const parsed = JSON.parse(raw);
+const setCurrentNavLink = (activeLink) => {
+  navLinks.forEach((link) => {
+    if (link === activeLink) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+};
 
-    const sanitized = {
-      sv: {
-        category1: normalizePromptList(parsed?.sv?.category1, "sv", "category1"),
-        category2: normalizePromptList(parsed?.sv?.category2, "sv", "category2"),
-        category3: normalizePromptList(parsed?.sv?.category3, "sv", "category3")
+const hashNavLinks = navLinks.filter((link) => (link.getAttribute("href") || "").startsWith("#"));
+if (hashNavLinks.length) {
+  const getHeaderOffset = () => {
+    const header = document.querySelector(".site-header");
+    const headerHeight = header ? header.getBoundingClientRect().height : 88;
+    return headerHeight + 14;
+  };
+
+  const scrollToHash = (hash, smooth = true) => {
+    if (!hash || hash === "#") return;
+    const target = document.querySelector(hash);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+    window.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+  };
+
+  const activateHash = (hash) => {
+    const link = hashNavLinks.find((item) => item.getAttribute("href") === hash) || hashNavLinks[0];
+    if (link) setCurrentNavLink(link);
+  };
+
+  hashNavLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const hash = link.getAttribute("href");
+      if (!hash || !document.querySelector(hash)) return;
+      event.preventDefault();
+      activateHash(hash);
+      history.replaceState(null, "", hash);
+      scrollToHash(hash, true);
+    });
+  });
+
+  const initialHash =
+    window.location.hash && document.querySelector(window.location.hash) ? window.location.hash : hashNavLinks[0].getAttribute("href");
+  activateHash(initialHash);
+
+  if ("IntersectionObserver" in window) {
+    const hashMap = new Map();
+    hashNavLinks.forEach((link) => {
+      const hash = link.getAttribute("href");
+      const section = hash ? document.querySelector(hash) : null;
+      if (section) hashMap.set(section, hash);
+    });
+
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        let best = null;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          if (!best || entry.intersectionRatio > best.intersectionRatio) {
+            best = entry;
+          }
+        }
+        if (!best) return;
+        const hash = hashMap.get(best.target);
+        if (!hash) return;
+        activateHash(hash);
       },
-      en: {
-        category1: normalizePromptList(parsed?.en?.category1, "en", "category1"),
-        category2: normalizePromptList(parsed?.en?.category2, "en", "category2"),
-        category3: normalizePromptList(parsed?.en?.category3, "en", "category3")
+      { threshold: [0.2, 0.35, 0.55], rootMargin: "-24% 0px -54% 0px" }
+    );
+
+    hashMap.forEach((_hash, section) => navObserver.observe(section));
+  } else {
+    window.addEventListener("hashchange", () => activateHash(window.location.hash));
+  }
+} else {
+  const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  const exactMatch = navLinks.find((link) => link.getAttribute("href") === currentPath);
+  if (exactMatch) setCurrentNavLink(exactMatch);
+}
+
+const revealItems = document.querySelectorAll(".reveal");
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          io.unobserve(entry.target);
+        }
       }
+    },
+    { threshold: 0.1, rootMargin: "0px 0px -8% 0px" }
+  );
+
+  revealItems.forEach((item) => io.observe(item));
+} else {
+  revealItems.forEach((item) => item.classList.add("visible"));
+}
+
+const inlineLogoWrap = document.querySelector("[data-inline-svg]");
+if (inlineLogoWrap) {
+  const triggerWrapGlitch = () => {
+    inlineLogoWrap.classList.add("glitch-hit");
+    window.setTimeout(() => inlineLogoWrap.classList.remove("glitch-hit"), 220);
+  };
+
+  const scheduleWrapGlitch = () => {
+    const delay = 1800 + Math.random() * 3200;
+    window.setTimeout(() => {
+      triggerWrapGlitch();
+      scheduleWrapGlitch();
+    }, delay);
+  };
+
+  scheduleWrapGlitch();
+
+  const svgPath = inlineLogoWrap.getAttribute("data-inline-svg");
+  if (svgPath) {
+    fetch(encodeURI(svgPath))
+      .then((response) => (response.ok ? response.text() : Promise.reject(new Error("svg fetch failed"))))
+      .then((svgText) => {
+        if (!svgText.includes("<svg")) return;
+        inlineLogoWrap.innerHTML = svgText;
+        const svg = inlineLogoWrap.querySelector("svg");
+        if (!svg) return;
+        svg.classList.add("wam-ref-logo-svg");
+        const paths = Array.from(svg.querySelectorAll("path"));
+        paths.forEach((path, index) => {
+          path.style.opacity = "0";
+          path.style.transform = "translateY(10px)";
+          path.style.transformOrigin = "center";
+          path.style.transition = `opacity 520ms ease ${index * 20}ms, transform 520ms ease ${index * 20}ms`;
+        });
+        requestAnimationFrame(() => {
+          paths.forEach((path) => {
+            path.style.opacity = "1";
+            path.style.transform = "translateY(0)";
+          });
+        });
+
+        const pulsePathGlitch = () => {
+          if (!paths.length) return;
+          const burstCount = Math.max(2, Math.round(paths.length * 0.08));
+          const selected = new Set();
+          while (selected.size < burstCount) {
+            selected.add(Math.floor(Math.random() * paths.length));
+          }
+
+          selected.forEach((pathIndex) => {
+            const target = paths[pathIndex];
+            target.style.transition =
+              "transform 120ms ease, opacity 120ms ease, filter 120ms ease";
+            target.style.transform = `translate(${Math.round((Math.random() - 0.5) * 12)}px, ${Math.round(
+              (Math.random() - 0.5) * 4
+            )}px) skewX(${Math.round((Math.random() - 0.5) * 18)}deg)`;
+            target.style.opacity = "0.78";
+            target.style.filter = "brightness(1.3)";
+          });
+
+          window.setTimeout(() => {
+            selected.forEach((pathIndex) => {
+              const target = paths[pathIndex];
+              target.style.transform = "translateY(0)";
+              target.style.opacity = "1";
+              target.style.filter = "none";
+            });
+          }, 140);
+        };
+
+        const schedulePathGlitch = () => {
+          const delay = 2200 + Math.random() * 3400;
+          window.setTimeout(() => {
+            pulsePathGlitch();
+            schedulePathGlitch();
+          }, delay);
+        };
+
+        schedulePathGlitch();
+      })
+      .catch(() => {
+        /* Keep fallback img if inline fetch is blocked. */
+      });
+  }
+}
+
+const supportsMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const shouldRunBgFx = supportsMotion && (body.classList.contains("home-page") || body.classList.contains("wam-page"));
+
+if (shouldRunBgFx) {
+  body.classList.add("has-digital-fx");
+
+  const canvas = document.createElement("canvas");
+  canvas.className = "bg-digital-canvas";
+  canvas.setAttribute("aria-hidden", "true");
+  body.prepend(canvas);
+
+  const ctx = canvas.getContext("2d", { alpha: true });
+  if (!ctx) {
+    body.classList.remove("has-digital-fx");
+  } else {
+    const digits = "0123456789";
+    const particles = [];
+    const clouds = [];
+    const rand = (min, max) => min + Math.random() * (max - min);
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const fract = (value) => value - Math.floor(value);
+    const smoothstep = (edge0, edge1, x) => {
+      const p = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+      return p * p * (3 - 2 * p);
     };
 
-    return sanitized;
-  } catch {
-    return clone(startDefaults);
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let cell = 13.5;
+    let cols = 0;
+    let rows = 0;
+    let last = performance.now();
+    let pointerLastMove = 0;
+
+    const pointer = {
+      x: 0,
+      y: 0,
+      tx: 0,
+      ty: 0,
+      power: 0,
+      targetPower: 0,
+    };
+
+    const phaseA = Math.random() * Math.PI * 2;
+    const phaseB = Math.random() * Math.PI * 2;
+    const phaseC = Math.random() * Math.PI * 2;
+    const phaseD = Math.random() * Math.PI * 2;
+
+    const resetCloud = (cloud, randomStart = false) => {
+      cloud.x = randomStart ? rand(0, cols) : -rand(cols * 0.08, cols * 0.2);
+      cloud.y = randomStart ? rand(0, rows) : rand(rows * 0.12, rows * 0.88);
+      cloud.r = rand(rows * 0.16, rows * 0.42);
+      cloud.vx = rand(0.015, 0.06);
+      cloud.vy = rand(-0.02, 0.02);
+      cloud.seed = rand(0, Math.PI * 2);
+      cloud.warp = rand(1.8, 4.5);
+    };
+
+    const resetParticle = (particle, randomStart = false) => {
+      particle.x = randomStart ? rand(0, width) : rand(-24, width + 24);
+      particle.y = randomStart ? rand(0, height) : rand(-24, height + 24);
+      particle.vx = rand(-0.12, 0.12);
+      particle.vy = rand(-0.12, 0.12);
+      particle.seed = rand(0, Math.PI * 2);
+      particle.size = rand(cell * 0.58, cell * 0.94);
+      particle.shiftInterval = rand(0.28, 2.1);
+      particle.nextShift = rand(0, 1.6);
+      particle.glyph = digits[Math.floor(Math.random() * digits.length)];
+    };
+
+    const ensureClouds = () => {
+      const target = clamp(Math.round((cols * rows) / 1550), 8, 17);
+      while (clouds.length < target) {
+        const cloud = {};
+        resetCloud(cloud, true);
+        clouds.push(cloud);
+      }
+      if (clouds.length > target) {
+        clouds.length = target;
+      }
+      clouds.forEach((cloud) => {
+        cloud.r = clamp(cloud.r, rows * 0.14, rows * 0.46);
+      });
+    };
+
+    const ensureParticles = () => {
+      const isSmallViewport = width <= 900;
+      const baseTarget = Math.round((width * height) / 1220);
+      const target = clamp(isSmallViewport ? Math.round(baseTarget * 0.82) : baseTarget, 560, 2300);
+      while (particles.length < target) {
+        const particle = {};
+        resetParticle(particle, true);
+        particles.push(particle);
+      }
+      if (particles.length > target) {
+        particles.length = target;
+      }
+      particles.forEach((particle) => {
+        particle.size = clamp(particle.size, cell * 0.52, cell);
+      });
+    };
+
+    const resize = () => {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      cell = width <= 680 ? 10.8 : width <= 1100 ? 12.2 : 13.5;
+      cols = Math.ceil(width / cell) + 2;
+      rows = Math.ceil(height / cell) + 2;
+      canvas.width = Math.max(1, Math.floor(width * dpr));
+      canvas.height = Math.max(1, Math.floor(height * dpr));
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ensureClouds();
+      ensureParticles();
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      pointer.x = width * 0.5;
+      pointer.y = height * 0.5;
+      pointer.tx = pointer.x;
+      pointer.ty = pointer.y;
+    };
+
+    const fieldBase = (x, y, t) => {
+      const nx = x / cols;
+      const ny = y / rows;
+      const warpX = nx + Math.sin(ny * 6.4 + t * 0.26 + phaseA) * 0.15;
+      const warpY = ny + Math.cos(nx * 5.8 - t * 0.23 + phaseB) * 0.15;
+      const low = Math.sin(warpX * 9.4 + t * 0.42 + phaseC) * 0.5 + 0.5;
+      const mid = Math.cos(warpY * 10.8 - t * 0.38 + phaseD) * 0.5 + 0.5;
+      const swirl = Math.sin((warpX + warpY) * 8.6 + t * 0.31) * 0.5 + 0.5;
+      return low * 0.34 + mid * 0.34 + swirl * 0.32;
+    };
+
+    const hash2 = (x, y) => fract(Math.sin(x * 127.1 + y * 311.7 + phaseA * 11.7) * 43758.5453123);
+    const flowAngle = (nx, ny, t) => {
+      const curveA = Math.sin(nx * 7.2 + t * 0.22 + phaseA) * 0.7;
+      const curveB = Math.cos(ny * 8.3 - t * 0.2 + phaseB) * 0.7;
+      const curveC = Math.sin((nx + ny) * 4.7 + t * 0.18 + phaseC) * 0.5;
+      return curveA + curveB + curveC;
+    };
+    const densityAt = (px, py, t) => {
+      const nx = px / width;
+      const ny = py / height;
+      let density = fieldBase(nx * cols, ny * rows, t) * 0.2;
+
+      for (const cloud of clouds) {
+        const cx = (cloud.x / cols) * width + Math.sin(t * 0.22 + cloud.seed) * (cloud.warp * cell);
+        const cy = (cloud.y / rows) * height + Math.cos(t * 0.2 + cloud.seed) * (cloud.warp * cell * 0.7);
+        const dx = px - cx;
+        const dy = py - cy;
+        const d2 = dx * dx + dy * dy;
+        const radiusPx = cloud.r * cell;
+        density += Math.exp(-d2 / (radiusPx * radiusPx)) * 0.88;
+      }
+
+      const grain = hash2(nx * 86 + t * 0.4, ny * 86 - t * 0.32);
+      density += (grain - 0.5) * 0.06;
+      return clamp(density, 0, 1);
+    };
+
+    const updatePointer = (clientX, clientY, now) => {
+      pointer.tx = clamp(clientX, 0, width);
+      pointer.ty = clamp(clientY, 0, height);
+      pointer.targetPower = 0.84;
+      pointerLastMove = now;
+    };
+
+    window.addEventListener(
+      "pointermove",
+      (event) => {
+        updatePointer(event.clientX, event.clientY, performance.now());
+      },
+      { passive: true }
+    );
+    window.addEventListener(
+      "touchmove",
+      (event) => {
+        if (!event.touches || !event.touches[0]) return;
+        updatePointer(event.touches[0].clientX, event.touches[0].clientY, performance.now());
+      },
+      { passive: true }
+    );
+
+    const tick = (now) => {
+      const dt = Math.max(0.5, Math.min(2.2, (now - last) / 16.67));
+      last = now;
+      const t = now * 0.001;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "rgba(4, 8, 12, 0.13)";
+      ctx.fillRect(0, 0, width, height);
+
+      if (now - pointerLastMove > 1400) {
+        pointer.targetPower = 0;
+      }
+      pointer.x += (pointer.tx - pointer.x) * 0.058;
+      pointer.y += (pointer.ty - pointer.y) * 0.058;
+      pointer.power += (pointer.targetPower - pointer.power) * 0.028;
+
+      for (const cloud of clouds) {
+        cloud.x += (cloud.vx + Math.sin(t * 0.46 + cloud.seed) * 0.012) * dt;
+        cloud.y += (cloud.vy + Math.cos(t * 0.42 + cloud.seed) * 0.01) * dt;
+
+        if (cloud.x - cloud.r > cols * 1.1 || cloud.y < -cloud.r * 0.45 || cloud.y > rows + cloud.r * 0.45) {
+          resetCloud(cloud, false);
+        }
+      }
+
+      for (const particle of particles) {
+        const nx = particle.x / width;
+        const ny = particle.y / height;
+        const angle = flowAngle(nx, ny, t);
+        particle.vx += Math.cos(angle) * 0.022 * dt;
+        particle.vy += Math.sin(angle) * 0.022 * dt;
+
+        const pointerRadius = Math.min(width, height) * 0.34;
+        if (pointer.power > 0.01) {
+          const dx = particle.x - pointer.x;
+          const dy = particle.y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < pointerRadius) {
+            const inv = 1 / Math.max(1, dist);
+            const falloffRaw = 1 - dist / pointerRadius;
+            const falloff = falloffRaw * falloffRaw;
+            const swirlX = -dy * inv;
+            const swirlY = dx * inv;
+            particle.vx += swirlX * falloff * pointer.power * 0.42 * dt;
+            particle.vy += swirlY * falloff * pointer.power * 0.42 * dt;
+            particle.vx += dx * inv * falloff * pointer.power * -0.045 * dt;
+            particle.vy += dy * inv * falloff * pointer.power * -0.045 * dt;
+          }
+        }
+
+        const edge = 70;
+        if (particle.x < edge) particle.vx += (edge - particle.x) * 0.0012 * dt;
+        if (particle.x > width - edge) particle.vx -= (particle.x - (width - edge)) * 0.0012 * dt;
+        if (particle.y < edge) particle.vy += (edge - particle.y) * 0.0012 * dt;
+        if (particle.y > height - edge) particle.vy -= (particle.y - (height - edge)) * 0.0012 * dt;
+
+        particle.vx *= 0.958;
+        particle.vy *= 0.958;
+        particle.x += particle.vx * dt * 1.5;
+        particle.y += particle.vy * dt * 1.5;
+
+        const wrapMargin = 36;
+        if (particle.x < -wrapMargin) {
+          particle.x = width + wrapMargin;
+          particle.y = rand(-wrapMargin, height + wrapMargin);
+        } else if (particle.x > width + wrapMargin) {
+          particle.x = -wrapMargin;
+          particle.y = rand(-wrapMargin, height + wrapMargin);
+        }
+        if (particle.y < -wrapMargin) {
+          particle.y = height + wrapMargin;
+          particle.x = rand(-wrapMargin, width + wrapMargin);
+        } else if (particle.y > height + wrapMargin) {
+          particle.y = -wrapMargin;
+          particle.x = rand(-wrapMargin, width + wrapMargin);
+        }
+
+        const nxNow = particle.x / width;
+        const nyNow = particle.y / height;
+        const density = densityAt(particle.x, particle.y, t);
+        const presence = smoothstep(0.26, 0.9, density);
+        if (presence < 0.04) continue;
+
+        const skipMask = hash2(nxNow * 56 + phaseD * 2.7, nyNow * 56 - phaseB * 2.4);
+        if (skipMask > presence + 0.16) continue;
+
+        if (t > particle.nextShift) {
+          particle.glyph = digits[Math.floor(hash2(nxNow * 190 + t, nyNow * 170 - t * 0.9) * digits.length)];
+          particle.nextShift = t + particle.shiftInterval;
+        }
+
+        const alpha = 0.006 + presence * 0.085;
+        const r = Math.round(124 + presence * 30);
+        const g = Math.round(173 + presence * 40);
+        const b = Math.round(198 + presence * 26);
+        const driftX = Math.sin(t * 0.75 + particle.seed) * 0.45;
+        const driftY = Math.cos(t * 0.7 + particle.seed * 1.2) * 0.4;
+
+        ctx.font = `${Math.round(particle.size)}px "Geist Mono", "SFMono-Regular", "Menlo", monospace`;
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
+        ctx.fillText(particle.glyph, particle.x + driftX, particle.y + driftY);
+      }
+
+      const vignette = ctx.createRadialGradient(
+        width * 0.5,
+        height * 0.54,
+        height * 0.12,
+        width * 0.5,
+        height * 0.54,
+        height * 0.8
+      );
+      vignette.addColorStop(0, "rgba(0, 0, 0, 0)");
+      vignette.addColorStop(1, "rgba(0, 0, 0, 0.28)");
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, width, height);
+
+      window.requestAnimationFrame(tick);
+    };
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+    window.requestAnimationFrame(tick);
   }
 }
-
-function saveCustomPrompts() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(customPrompts));
-}
-
-function ensureArray(value) {
-  return Array.isArray(value) ? value.filter((item) => typeof item === "string" && item.trim()) : [];
-}
-
-function normalizePromptList(items, language, category) {
-  const normalized = ensureArray(items)
-    .map((item) => sanitizePromptText(item))
-    .filter((item) => item && !isInBaseForLanguage(language, category, item));
-
-  return [...new Set(normalized)].slice(0, MAX_CUSTOM_PROMPTS_PER_CATEGORY);
-}
-
-function sanitizePromptText(value) {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function initTheme() {
-  const saved = localStorage.getItem("sketchTheme");
-  if (saved === "light" || saved === "dark") {
-    return saved;
-  }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-
-function initLanguage() {
-  const saved = localStorage.getItem("sketchLanguage");
-  if (saved === "sv" || saved === "en") {
-    return saved;
-  }
-  return "sv";
-}
-
-let remainingSeconds = ROUND_SECONDS;
-let timerId = null;
-let currentTheme = initTheme();
-let currentLanguage = initLanguage();
-
-const categories = ["category1", "category2", "category3"];
-let activeSettingsCategory = "category1";
-let generatedPromptsByCategory = {
-  category1: [],
-  category2: [],
-  category3: []
-};
-
-function randomFrom(list) {
-  if (!Array.isArray(list) || list.length === 0) {
-    return "";
-  }
-  return list[Math.floor(Math.random() * list.length)];
-}
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  const mm = String(mins).padStart(2, "0");
-  const ss = String(secs).padStart(2, "0");
-  return `${mm}:${ss}`;
-}
-
-function getCurrentPromptPool(language) {
-  return {
-    category1: [...basePrompts[language].category1, ...customPrompts[language].category1],
-    category2: [...basePrompts[language].category2, ...customPrompts[language].category2],
-    category3: [...basePrompts[language].category3, ...customPrompts[language].category3]
-  };
-}
-
-function getPromptPoolForCategory(language, category) {
-  if (!category) return [];
-  if (!basePrompts[language] || !basePrompts[language][category]) return [];
-
-  const basePool = basePrompts[language][category] || [];
-  const customPool = (customPrompts[language] && customPrompts[language][category]) ? customPrompts[language][category] : [];
-  return [...basePool, ...customPool];
-}
-
-function pickPrompts() {
-  const selected = getCurrentPromptPool(currentLanguage);
-
-  promptEls.forEach((el, index) => {
-    const category = playCategoryMap[index]?.key;
-    const pool = getPromptPoolForCategory(currentLanguage, category) || selected[category] || [];
-    el.textContent = randomFrom(pool);
-  });
-}
-
-function showScreen(screen) {
-  [screenStart, screenPlay, screenFinished, screenSettings].forEach((el) => el.classList.remove("active"));
-  if (screen === "start") {
-    screenStart.classList.add("active");
-  } else if (screen === "play") {
-    screenPlay.classList.add("active");
-  } else if (screen === "finished") {
-    screenFinished.classList.add("active");
-  } else if (screen === "settings") {
-    screenSettings.classList.add("active");
-    reloadCustomPrompts();
-    activeSettingsCategory = settingsCategorySelect.value;
-    generatedPromptsByCategory[activeSettingsCategory] = [];
-    renderSettings();
-  }
-}
-
-function clearTimer() {
-  if (timerId !== null) {
-    clearInterval(timerId);
-    timerId = null;
-  }
-}
-
-function startTimer() {
-  clearTimer();
-  remainingSeconds = ROUND_SECONDS;
-  timeDisplay.textContent = formatTime(remainingSeconds);
-
-  timerId = setInterval(() => {
-    remainingSeconds -= 1;
-
-    if (remainingSeconds <= 0) {
-      timeDisplay.textContent = "00:00";
-      clearTimer();
-      showScreen("finished");
-      return;
-    }
-
-    timeDisplay.textContent = formatTime(remainingSeconds);
-  }, 1000);
-}
-
-function startRound() {
-  reloadCustomPrompts();
-  pickPrompts();
-  showScreen("play");
-  startTimer();
-}
-
-function resetRound() {
-  clearTimer();
-  remainingSeconds = ROUND_SECONDS;
-  timeDisplay.textContent = formatTime(remainingSeconds);
-  showScreen("start");
-}
-
-function applyTheme(theme) {
-  const root = document.documentElement;
-  if (theme === "dark") {
-    root.classList.add("theme-dark");
-  } else {
-    root.classList.remove("theme-dark");
-  }
-}
-
-function updateLanguageText(language) {
-  const strings = i18n[language];
-
-  startBtn.textContent = strings.startButton;
-  settingsOpenBtn.textContent = strings.openSettings;
-  restartBtn.textContent = strings.resetButton;
-  resetBtn.textContent = strings.resetButton;
-
-  langToggle.textContent = strings.languageButtonText;
-  langToggle.setAttribute("aria-label", strings.languageAriaLabel);
-
-  themeToggle.textContent = currentTheme === "dark" ? strings.themeButtonDark : strings.themeButtonLight;
-  themeToggle.setAttribute("aria-label", strings.themeAriaLabel);
-
-  timerLabelEl.textContent = strings.timerLabel;
-  finishedMessageEl.textContent = strings.finishedMessage;
-
-  screenStart.setAttribute("aria-label", strings.screenStartLabel);
-  screenPlay.setAttribute("aria-label", strings.screenPlayLabel);
-  screenFinished.setAttribute("aria-label", strings.screenFinishedLabel);
-  screenSettings.setAttribute("aria-label", strings.screenSettingsLabel);
-
-  settingsTitle.textContent = strings.settingsTitle;
-  settingsCategoryLabel.textContent = strings.settingsCategoryLabel;
-  manualLabel.textContent = strings.manualLabel;
-  manualPromptInput.placeholder = strings.manualPlaceholder;
-  settingsGenerateTitle.textContent = strings.generateTitle;
-  settingsCustomTitle.textContent = strings.customTitle;
-  generatePromptsBtn.textContent = strings.generateButton;
-  applyGeneratedBtn.textContent = strings.applyGenerated;
-  manualAddBtn.textContent = strings.manualAddButton;
-  saveLocalBtn.textContent = strings.saveLocalButton;
-  saveAllBtn.textContent = strings.saveAllButton;
-  resetPromptsBtn.textContent = strings.resetPromptsButton;
-  settingsResetTitle.textContent = strings.resetPromptsTitle;
-  document.getElementById("settings-backup-title").textContent = strings.backupTitle;
-  deleteSelectedBtn.textContent = strings.deleteSelected;
-  closeSettingsBtn.textContent = strings.closeSettings;
-  backupPayloadInput.placeholder = strings.backupPlaceholder;
-
-  const categoryNames = strings.settingsCategoryNames;
-  categories.forEach((category, index) => {
-    const option = settingsCategorySelect.querySelector(`option[value="${category}"]`);
-    if (option) {
-      const customCount = customPrompts[currentLanguage][category].length;
-      option.textContent = `${categoryNames[index]} (${customCount}/${MAX_CUSTOM_PROMPTS_PER_CATEGORY})`;
-    }
-  });
-
-  if (settingsCategoryCount) {
-    const countText = getCategoryCountText(getSelectedCategoryName(), getCurrentCategoryLabel());
-    settingsCategoryCount.textContent = countText;
-  }
-
-  document.documentElement.lang = strings.lang;
-  document.title = strings.title;
-
-  if (screenSettings.classList.contains("active")) {
-    renderSettings();
-  }
-
-  screenStart.querySelector(".play-actions")?.querySelector("button")?.setAttribute("title", strings.resetButton);
-}
-
-function addCustomPrompt(category, value) {
-  const clean = sanitizePromptText(value);
-  if (!clean) return false;
-
-  const list = customPrompts[currentLanguage][category];
-  if (list.includes(clean)) return false;
-  if (isInBaseForLanguage(currentLanguage, category, clean)) return false;
-  if (list.length >= MAX_CUSTOM_PROMPTS_PER_CATEGORY) return "full";
-
-  list.push(clean);
-  saveCustomPrompts();
-  return true;
-}
-
-function removeCustomPrompts(category, valuesToRemove) {
-  const list = customPrompts[currentLanguage][category];
-  const removeSet = new Set(valuesToRemove);
-  const filtered = list.filter((item) => !removeSet.has(item));
-  customPrompts[currentLanguage][category] = filtered;
-  saveCustomPrompts();
-}
-
-function isInBaseForLanguage(language, category, text) {
-  return basePrompts[language][category].includes(text);
-}
-
-function getCategoryCountText(categoryName, category) {
-  const language = i18n[currentLanguage];
-  const count = customPrompts[currentLanguage][category].length;
-  const hasCountText = language.categoryCount
-    .replace("{name}", categoryName)
-    .replace("{count}", String(count))
-    .replace("{max}", String(MAX_CUSTOM_PROMPTS_PER_CATEGORY));
-
-  return hasCountText;
-}
-
-function getSelectedCategoryName() {
-  const index = categories.indexOf(getCurrentCategoryLabel());
-  const names = i18n[currentLanguage].settingsCategoryNames;
-  return names[index] || "";
-}
-
-function updateSettingsCategoryCounts() {
-  const category = getCurrentCategoryLabel();
-  if (settingsCategoryCount) {
-    settingsCategoryCount.textContent = getCategoryCountText(getSelectedCategoryName(), category);
-  }
-
-  const names = i18n[currentLanguage].settingsCategoryNames;
-  categories.forEach((categoryKey, index) => {
-    const option = settingsCategorySelect.querySelector(`option[value="${categoryKey}"]`);
-    if (option) {
-      const count = customPrompts[currentLanguage][categoryKey].length;
-      option.textContent = `${names[index]} (${count}/${MAX_CUSTOM_PROMPTS_PER_CATEGORY})`;
-    }
-  });
-}
-
-
-function createCheckboxItem(text, checked = true) {
-  const item = document.createElement("label");
-  item.className = "prompt-item";
-
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.value = text;
-  checkbox.checked = checked;
-
-  const label = document.createElement("span");
-  label.textContent = text;
-
-  item.append(checkbox, label);
-  return item;
-}
-
-function renderGeneratedList(items) {
-  generatedList.innerHTML = "";
-
-  if (!items.length) {
-    const emptyText = document.createElement("p");
-    emptyText.textContent = i18n[currentLanguage].noItems;
-    emptyText.style.margin = "0.2rem 0";
-    generatedList.append(emptyText);
-    return;
-  }
-
-  items.forEach((text) => {
-    generatedList.append(createCheckboxItem(text, true));
-  });
-}
-
-function renderCustomList(category) {
-  const items = customPrompts[currentLanguage][category] || [];
-  customList.innerHTML = "";
-
-  if (!items.length) {
-    const emptyText = document.createElement("p");
-    emptyText.textContent = i18n[currentLanguage].noItems;
-    emptyText.style.margin = "0.2rem 0";
-    customList.append(emptyText);
-    return;
-  }
-
-  items.forEach((text) => {
-    customList.append(createCheckboxItem(text, false));
-  });
-}
-
-function renderSettings() {
-  const category = getCurrentCategoryLabel();
-  renderCustomList(category);
-  renderGeneratedList(generatedPromptsByCategory[category]);
-  updateSettingsCategoryCounts();
-}
-
-function getCurrentCategoryLabel() {
-  return activeSettingsCategory;
-}
-
-function getActiveGeneratedPrompts() {
-  return generatedPromptsByCategory[getCurrentCategoryLabel()] || [];
-}
-
-function setActiveGeneratedPrompts(value) {
-  generatedPromptsByCategory[getCurrentCategoryLabel()] = value;
-}
-
-function randomGeneratedPrompt(language) {
-  const seed = promptSources[language];
-  const template = Math.floor(Math.random() * 3);
-  if (template === 0) {
-    if (language === "sv") {
-      return `Har ${randomFrom(seed.has)}`;
-    }
-    return `Has ${randomFrom(seed.has)}`;
-  }
-  if (template === 1) {
-    if (language === "sv") {
-      return `Är ${randomFrom(seed.state)}`;
-    }
-    return `Is ${randomFrom(seed.state)}`;
-  }
-
-  return randomFrom(seed.do);
-}
-
-function getGeneratedPool(language) {
-  const seed = promptSources[language];
-  return [
-    ...seed.has.map((item) => language === "sv" ? `Har ${item}` : `Has ${item}`),
-    ...seed.state.map((item) => language === "sv" ? `Är ${item}` : `Is ${item}`),
-    ...seed.do
-  ];
-}
-
-function generatePrompts() {
-  const language = currentLanguage;
-  const maxAttempts = 5000;
-  let attempts = 0;
-  const existing = new Set([
-    ...basePrompts[language].category1,
-    ...basePrompts[language].category2,
-    ...basePrompts[language].category3,
-    ...customPrompts[language].category1,
-    ...customPrompts[language].category2,
-    ...customPrompts[language].category3
-  ]);
-
-  const generatedPool = getGeneratedPool(language);
-  const candidates = generatedPool.filter((prompt) => !existing.has(prompt));
-  const fallbackPool = candidates.length > 0 ? candidates : generatedPool;
-
-  const generated = new Set();
-  while (generated.size < generatedPromptCount && attempts < maxAttempts) {
-    attempts += 1;
-    const maybePrompt = randomFrom(fallbackPool);
-    if (!generated.has(maybePrompt)) {
-      generated.add(maybePrompt);
-    }
-  }
-
-  if (generated.size < generatedPromptCount && fallbackPool.length > 0) {
-    let loopGuard = 0;
-    while (generated.size < generatedPromptCount && loopGuard < fallbackPool.length * 3) {
-      const candidate = fallbackPool[loopGuard % fallbackPool.length];
-      generated.add(candidate);
-      loopGuard += 1;
-    }
-  }
-
-  const finalPrompts = Array.from(generated).slice(0, generatedPromptCount);
-  setActiveGeneratedPrompts(finalPrompts);
-  renderGeneratedList(finalPrompts);
-}
-
-function applyGeneratedSelection() {
-  const boxes = generatedList.querySelectorAll("input:checked");
-  const category = getCurrentCategoryLabel();
-  const selected = new Set();
-  const successfullyAdded = new Set();
-  let added = false;
-  let limitReached = false;
-
-  boxes.forEach((box) => {
-    const value = box.value;
-    selected.add(value);
-    const result = addCustomPrompt(category, value);
-    if (result === true) {
-      successfullyAdded.add(value);
-      added = true;
-    } else if (result === "full") {
-      limitReached = true;
-    }
-  });
-
-  setActiveGeneratedPrompts(getActiveGeneratedPrompts().filter((prompt) => !successfullyAdded.has(prompt)));
-
-  if (added) {
-    setBackupStatus("");
-    renderCustomList(category);
-    renderGeneratedList(getActiveGeneratedPrompts());
-    updateSettingsCategoryCounts();
-    if (limitReached) {
-      setBackupStatus(i18n[currentLanguage].maxLimitReached);
-    }
-    return;
-  }
-
-  if (limitReached) {
-    setBackupStatus(i18n[currentLanguage].maxLimitReached);
-  } else if (selected.size > 0) {
-    setBackupStatus(i18n[currentLanguage].noNewSelected);
-  } else {
-    setBackupStatus("");
-  }
-
-  renderGeneratedList(getActiveGeneratedPrompts());
-}
-
-function applyDeleteSelected() {
-  const boxes = customList.querySelectorAll("input:checked");
-  const category = getCurrentCategoryLabel();
-  const toDelete = [];
-
-  boxes.forEach((box) => {
-    toDelete.push(box.value);
-  });
-
-  if (toDelete.length > 0) {
-    removeCustomPrompts(category, toDelete);
-    renderCustomList(category);
-    setBackupStatus("");
-    updateSettingsCategoryCounts();
-  }
-}
-
-function applyManualAdd() {
-  const category = getCurrentCategoryLabel();
-  const result = addCustomPrompt(category, manualPromptInput.value);
-  if (result === true) {
-    manualPromptInput.value = "";
-    renderCustomList(category);
-    setBackupStatus("");
-    updateSettingsCategoryCounts();
-    return;
-  }
-
-  if (result === "full") {
-    setBackupStatus(i18n[currentLanguage].maxLimitReached);
-    return;
-  }
-
-  setBackupStatus("");
-}
-
-function resetPromptsToDefaults() {
-  const strings = i18n[currentLanguage];
-  const shouldReset = window.confirm(strings.resetPromptsConfirm);
-  if (!shouldReset) {
-    return;
-  }
-
-  customPrompts = clone(startDefaults);
-  localStorage.removeItem(STORAGE_KEY);
-  settingsCategorySelect.value = activeSettingsCategory || "category1";
-  renderSettings();
-  setBackupStatus("");
-}
-
-function encodePayload(payload) {
-  const raw = JSON.stringify(payload);
-  try {
-    return btoa(unescape(encodeURIComponent(raw)));
-  } catch {
-    return btoa(raw);
-  }
-}
-
-function getBackupSnapshot() {
-  return {
-    version: 1,
-    createdAt: new Date().toISOString(),
-    prompts: customPrompts
-  };
-}
-
-function downloadTextFile(filename, content, type = "application/json") {
-  const blob = new Blob([content], { type: `${type};charset=utf-8` });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  anchor.style.display = "none";
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-  URL.revokeObjectURL(url);
-}
-
-function setBackupStatus(message) {
-  backupStatus.textContent = message;
-}
-
-function saveLocalBackup() {
-  saveCustomPrompts();
-  const payload = JSON.stringify(getBackupSnapshot(), null, 2);
-  const date = new Date().toISOString().slice(0, 10);
-  downloadTextFile(`sketchgame-backup-${date}.json`, payload);
-  backupPayloadInput.value = "";
-  setBackupStatus(i18n[currentLanguage].backupStatusLocal);
-}
-
-function saveForEveryone() {
-  const enteredCode = window.prompt(i18n[currentLanguage].backupDialogLabel);
-  if (enteredCode === null) {
-    return;
-  }
-
-  if (enteredCode !== BACKUP_CODE) {
-    setBackupStatus(i18n[currentLanguage].backupStatusDenied);
-    return;
-  }
-
-  const encoded = encodePayload(getBackupSnapshot());
-  backupPayloadInput.value = encoded;
-  setBackupStatus(i18n[currentLanguage].backupStatusUnlocked);
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(encoded).then(() => {
-      setBackupStatus(i18n[currentLanguage].backupStatusCopied);
-    }).catch(() => {
-      setBackupStatus(`${i18n[currentLanguage].backupStatusUnlocked}`);
-    });
-  }
-}
-
-themeToggle.addEventListener("click", () => {
-  currentTheme = currentTheme === "light" ? "dark" : "light";
-  applyTheme(currentTheme);
-  localStorage.setItem("sketchTheme", currentTheme);
-  updateLanguageText(currentLanguage);
-});
-
-langToggle.addEventListener("click", () => {
-  currentLanguage = currentLanguage === "sv" ? "en" : "sv";
-  localStorage.setItem("sketchLanguage", currentLanguage);
-  generatedPromptsByCategory = {
-    category1: [],
-    category2: [],
-    category3: []
-  };
-  updateLanguageText(currentLanguage);
-  renderSettings();
-});
-
-settingsCategorySelect.addEventListener("change", () => {
-  activeSettingsCategory = settingsCategorySelect.value;
-  generatedPromptsByCategory[activeSettingsCategory] = [];
-  renderSettings();
-});
-manualAddBtn.addEventListener("click", applyManualAdd);
-generatePromptsBtn.addEventListener("click", generatePrompts);
-applyGeneratedBtn.addEventListener("click", applyGeneratedSelection);
-deleteSelectedBtn.addEventListener("click", applyDeleteSelected);
-saveLocalBtn.addEventListener("click", saveLocalBackup);
-saveAllBtn.addEventListener("click", saveForEveryone);
-resetPromptsBtn.addEventListener("click", resetPromptsToDefaults);
-
-startBtn.addEventListener("click", startRound);
-restartBtn.addEventListener("click", resetRound);
-resetBtn.addEventListener("click", resetRound);
-settingsOpenBtn.addEventListener("click", () => showScreen("settings"));
-closeSettingsBtn.addEventListener("click", () => {
-  showScreen("start");
-  generatedPromptsByCategory[getCurrentCategoryLabel()] = [];
-});
-
-applyTheme(currentTheme);
-updateLanguageText(currentLanguage);
-
-showScreen("start");
-timeDisplay.textContent = formatTime(ROUND_SECONDS);
