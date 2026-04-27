@@ -1540,18 +1540,21 @@ a {
 
 .upm-map {
   margin-top: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-  padding: 1.1rem 1.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.upm-map-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.9rem;
   flex-wrap: wrap;
-  background: rgba(255, 255, 255, 0.02);
 }
 
-.upm-map p {
+.upm-map-meta p {
   margin: 0;
   font-family: "Syne", "Segoe UI", sans-serif;
   font-size: 1rem;
@@ -1575,6 +1578,20 @@ a {
 .upm-map-link:hover {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.56);
+}
+
+.upm-map-wrap {
+  margin-top: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  min-height: 360px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.upm-map-wrap iframe {
+  width: 100%;
+  min-height: 360px;
+  border: 0;
+  filter: saturate(0.9) contrast(1.05) brightness(0.95);
 }
 
 .upm-location-gallery {
@@ -1918,8 +1935,12 @@ a {
   }
 
   .upm-map {
-    align-items: flex-start;
-    padding: 0.95rem 1rem;
+    gap: 0.72rem;
+  }
+
+  .upm-map-wrap,
+  .upm-map-wrap iframe {
+    min-height: 300px;
   }
 
   .upm-map-link {
@@ -1984,7 +2005,7 @@ a {
     max-width: 100%;
   }
 
-  .upm-map p {
+  .upm-map-meta p {
     font-size: 0.92rem;
   }
 }

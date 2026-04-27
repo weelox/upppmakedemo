@@ -10,7 +10,7 @@
     />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'self' https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests"
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="stylesheet" href="styles.css" />
@@ -545,10 +545,15 @@
             </li>
           </ul>
           <div class="upm-map" aria-label="Hitta till UppMAKE">
-            <p>Diktargatan 25, 703 70 Örebro</p>
-            <a class="upm-map-link" href="https://maps.google.com/?q=Diktargatan+25,+703+70+Örebro" target="_blank" rel="noopener noreferrer">
-              Öppna i Google Maps ↗
-            </a>
+            <div class="map-wrap upm-map-wrap">
+              <iframe
+                title="Karta till UppMAKE i Örebro"
+                src="https://www.google.com/maps?hl=sv&q=Diktargatan%2025%2C%20703%2070%20Örebro&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              ></iframe>
+            </div>
           </div>
         </div>
       </section>
