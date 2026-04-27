@@ -146,22 +146,6 @@ if (inlineLogoWrap) {
   };
 
   scheduleWrapGlitch();
-
-  const svgPath = inlineLogoWrap.getAttribute("data-inline-svg");
-  if (svgPath) {
-    fetch(encodeURI(svgPath))
-      .then((response) => (response.ok ? response.text() : Promise.reject(new Error("svg fetch failed"))))
-      .then((svgText) => {
-        if (!svgText.includes("<svg")) return;
-        inlineLogoWrap.innerHTML = svgText;
-        const svg = inlineLogoWrap.querySelector("svg");
-        if (!svg) return;
-        svg.classList.add("upm-logo-svg");
-      })
-      .catch(() => {
-        /* Keep fallback img if inline fetch is blocked. */
-      });
-  }
 }
 
 const supportsMotion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -252,8 +236,11 @@ if (shouldRunBgFx) {
 
     const ensureParticles = () => {
       const isSmallViewport = width <= 900;
-      const baseTarget = Math.round((width * height) / 1220);
-      const target = clamp(isSmallViewport ? Math.round(baseTarget * 0.82) : baseTarget, 560, 2300);
+      const densityDivisor = isSmallViewport ? 1700 : 1220;
+      const baseTarget = Math.round((width * height) / densityDivisor);
+      const minTarget = isSmallViewport ? 240 : 560;
+      const maxTarget = isSmallViewport ? 1400 : 2300;
+      const target = clamp(isSmallViewport ? Math.round(baseTarget * 0.94) : baseTarget, minTarget, maxTarget);
       while (particles.length < target) {
         const particle = {};
         resetParticle(particle, true);
