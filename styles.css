@@ -1777,6 +1777,10 @@ a {
   object-position: center 42%;
 }
 
+.upm-tile-sewing img {
+  object-position: center 38%;
+}
+
 .upm-tile:hover::before,
 .upm-tile:hover::after {
   opacity: 1;
