@@ -219,8 +219,16 @@ if (shouldRunBgFx) {
       particle.glyph = digits[Math.floor(Math.random() * digits.length)];
     };
 
+    const respawnParticleAnywhere = (particle) => {
+      // Keep respawns spread across the full field instead of only from edges.
+      particle.x = rand(width * 0.04, width * 0.96);
+      particle.y = rand(height * 0.04, height * 0.96);
+      particle.vx = rand(-0.16, 0.16);
+      particle.vy = rand(-0.16, 0.16);
+    };
+
     const ensureClouds = () => {
-      const target = clamp(Math.round((cols * rows) / 1550), 8, 17);
+      const target = clamp(Math.round((cols * rows) / 1450), 10, 22);
       while (clouds.length < target) {
         const cloud = {};
         resetCloud(cloud, true);
@@ -236,10 +244,10 @@ if (shouldRunBgFx) {
 
     const ensureParticles = () => {
       const isSmallViewport = width <= 900;
-      const densityDivisor = isSmallViewport ? 1700 : 1220;
+      const densityDivisor = isSmallViewport ? 1420 : 980;
       const baseTarget = Math.round((width * height) / densityDivisor);
-      const minTarget = isSmallViewport ? 240 : 560;
-      const maxTarget = isSmallViewport ? 1400 : 2300;
+      const minTarget = isSmallViewport ? 320 : 760;
+      const maxTarget = isSmallViewport ? 1900 : 3200;
       const target = clamp(isSmallViewport ? Math.round(baseTarget * 0.94) : baseTarget, minTarget, maxTarget);
       while (particles.length < target) {
         const particle = {};
@@ -299,7 +307,7 @@ if (shouldRunBgFx) {
     const densityAt = (px, py, t) => {
       const nx = px / width;
       const ny = py / height;
-      let density = fieldBase(nx * cols, ny * rows, t) * 0.2;
+      let density = fieldBase(nx * cols, ny * rows, t) * 0.24;
 
       for (const cloud of clouds) {
         const cx = (cloud.x / cols) * width + Math.sin(t * 0.22 + cloud.seed) * (cloud.warp * cell);
@@ -308,11 +316,11 @@ if (shouldRunBgFx) {
         const dy = py - cy;
         const d2 = dx * dx + dy * dy;
         const radiusPx = cloud.r * cell;
-        density += Math.exp(-d2 / (radiusPx * radiusPx)) * 0.88;
+        density += Math.exp(-d2 / (radiusPx * radiusPx)) * 0.96;
       }
 
       const grain = hash2(nx * 86 + t * 0.4, ny * 86 - t * 0.32);
-      density += (grain - 0.5) * 0.06;
+      density += (grain - 0.5) * 0.08;
       return clamp(density, 0, 1);
     };
 
@@ -346,7 +354,7 @@ if (shouldRunBgFx) {
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "rgba(4, 8, 12, 0.13)";
+      ctx.fillStyle = "rgba(4, 8, 12, 0.1)";
       ctx.fillRect(0, 0, width, height);
 
       if (now - pointerLastMove > 1400) {
@@ -369,8 +377,8 @@ if (shouldRunBgFx) {
         const nx = particle.x / width;
         const ny = particle.y / height;
         const angle = flowAngle(nx, ny, t);
-        particle.vx += Math.cos(angle) * 0.022 * dt;
-        particle.vy += Math.sin(angle) * 0.022 * dt;
+        particle.vx += Math.cos(angle) * 0.029 * dt;
+        particle.vy += Math.sin(angle) * 0.029 * dt;
 
         const pointerRadius = Math.min(width, height) * 0.34;
         if (pointer.power > 0.01) {
@@ -396,42 +404,36 @@ if (shouldRunBgFx) {
         if (particle.y < edge) particle.vy += (edge - particle.y) * 0.0012 * dt;
         if (particle.y > height - edge) particle.vy -= (particle.y - (height - edge)) * 0.0012 * dt;
 
-        particle.vx *= 0.958;
-        particle.vy *= 0.958;
-        particle.x += particle.vx * dt * 1.5;
-        particle.y += particle.vy * dt * 1.5;
+        particle.vx *= 0.965;
+        particle.vy *= 0.965;
+        particle.x += particle.vx * dt * 1.85;
+        particle.y += particle.vy * dt * 1.85;
 
         const wrapMargin = 36;
-        if (particle.x < -wrapMargin) {
-          particle.x = width + wrapMargin;
-          particle.y = rand(-wrapMargin, height + wrapMargin);
-        } else if (particle.x > width + wrapMargin) {
-          particle.x = -wrapMargin;
-          particle.y = rand(-wrapMargin, height + wrapMargin);
-        }
-        if (particle.y < -wrapMargin) {
-          particle.y = height + wrapMargin;
-          particle.x = rand(-wrapMargin, width + wrapMargin);
-        } else if (particle.y > height + wrapMargin) {
-          particle.y = -wrapMargin;
-          particle.x = rand(-wrapMargin, width + wrapMargin);
+        if (
+          particle.x < -wrapMargin ||
+          particle.x > width + wrapMargin ||
+          particle.y < -wrapMargin ||
+          particle.y > height + wrapMargin
+        ) {
+          respawnParticleAnywhere(particle);
         }
 
         const nxNow = particle.x / width;
         const nyNow = particle.y / height;
         const density = densityAt(particle.x, particle.y, t);
-        const presence = smoothstep(0.26, 0.9, density);
+        const presence = smoothstep(0.22, 0.9, density);
         if (presence < 0.04) continue;
 
         const skipMask = hash2(nxNow * 56 + phaseD * 2.7, nyNow * 56 - phaseB * 2.4);
-        if (skipMask > presence + 0.16) continue;
+        if (skipMask > presence + 0.1) continue;
 
         if (t > particle.nextShift) {
           particle.glyph = digits[Math.floor(hash2(nxNow * 190 + t, nyNow * 170 - t * 0.9) * digits.length)];
           particle.nextShift = t + particle.shiftInterval;
         }
 
-        const alpha = 0.006 + presence * 0.085;
+        const alpha = 0.016 + presence * 0.15;
         const r = Math.round(124 + presence * 30);
         const g = Math.round(173 + presence * 40);
         const b = Math.round(198 + presence * 26);
