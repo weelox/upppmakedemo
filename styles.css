@@ -1769,6 +1769,14 @@ a {
   filter: saturate(0.95) contrast(1.04) brightness(0.96);
 }
 
+.upm-tile-cad video {
+  object-position: center center;
+}
+
+.upm-tile-woodworking img {
+  object-position: center 42%;
+}
+
 .upm-tile:hover::before,
 .upm-tile:hover::after {
   opacity: 1;
