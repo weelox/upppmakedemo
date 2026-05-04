@@ -1,4 +1,5 @@
 const body = document.body;
+body.classList.add("js-enabled");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const nav = document.querySelector("[data-main-nav]");
 const navLinks = Array.from(document.querySelectorAll("[data-main-nav] a"));
@@ -163,6 +164,15 @@ if (shouldRunBgFx) {
   if (!ctx) {
     body.classList.remove("has-digital-fx");
   } else {
+    const prefersReducedData = Boolean(navigator.connection && navigator.connection.saveData);
+    const lowPowerDevice =
+      (typeof navigator.hardwareConcurrency === "number" && navigator.hardwareConcurrency <= 4) ||
+      (typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4);
+    const qualityFactor = prefersReducedData ? 0.72 : lowPowerDevice ? 0.86 : 1;
+    const targetFps = lowPowerDevice ? 30 : 40;
+    const frameIntervalMs = 1000 / targetFps;
+    const dprCap = lowPowerDevice ? 1 : 1.25;
+
     const digits = "0123456789";
     const particles = [];
     const clouds = [];
@@ -181,6 +191,7 @@ if (shouldRunBgFx) {
     let cols = 0;
     let rows = 0;
     let last = performance.now();
+    let lastPaint = last;
 
     const phaseA = Math.random() * Math.PI * 2;
     const phaseB = Math.random() * Math.PI * 2;
@@ -218,7 +229,7 @@ if (shouldRunBgFx) {
     };
 
     const ensureClouds = () => {
-      const target = clamp(Math.round((cols * rows) / 1450), 10, 22);
+      const target = clamp(Math.round(((cols * rows) / 1450) * qualityFactor), 8, 22);
       while (clouds.length < target) {
         const cloud = {};
         resetCloud(cloud, true);
@@ -234,10 +245,10 @@ if (shouldRunBgFx) {
 
     const ensureParticles = () => {
       const isSmallViewport = width <= 900;
-      const densityDivisor = isSmallViewport ? 1420 : 980;
+      const densityDivisor = (isSmallViewport ? 1420 : 980) / qualityFactor;
       const baseTarget = Math.round((width * height) / densityDivisor);
-      const minTarget = isSmallViewport ? 320 : 760;
-      const maxTarget = isSmallViewport ? 1900 : 3200;
+      const minTarget = Math.round((isSmallViewport ? 320 : 760) * qualityFactor);
+      const maxTarget = Math.round((isSmallViewport ? 1900 : 3200) * qualityFactor);
       const target = clamp(isSmallViewport ? Math.round(baseTarget * 0.94) : baseTarget, minTarget, maxTarget);
       while (particles.length < target) {
         const particle = {};
@@ -253,9 +264,10 @@ if (shouldRunBgFx) {
     };
 
     const resize = () => {
-      dpr = Math.min(2, window.devicePixelRatio || 1);
       width = window.innerWidth;
       height = window.innerHeight;
+      const isSmallViewport = width <= 900;
+      dpr = Math.min(isSmallViewport ? 1 : dprCap, window.devicePixelRatio || 1);
       cell = width <= 680 ? 10.8 : width <= 1100 ? 12.2 : 13.5;
       cols = Math.ceil(width / cell) + 2;
       rows = Math.ceil(height / cell) + 2;
@@ -310,8 +322,14 @@ if (shouldRunBgFx) {
     };
 
     const tick = (now) => {
+      if (now - lastPaint < frameIntervalMs) {
+        window.requestAnimationFrame(tick);
+        return;
+      }
+
       const dt = Math.max(0.5, Math.min(2.2, (now - last) / 16.67));
       last = now;
+      lastPaint = now;
       const t = now * 0.001;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
