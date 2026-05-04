@@ -133,8 +133,7 @@ main,
 .hero-media .card-a,
 .hero-media .card-b,
 .hero-media .card-c,
-.upm-logos figure,
-.upm-solutions a {
+.upm-logos figure {
   position: relative;
   z-index: 12;
 }
@@ -1371,51 +1370,6 @@ body:not(.js-enabled) .upm-tile video {
   color: #fff;
 }
 
-.upm-solutions {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.upm-solutions li {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.upm-solutions a {
-  display: grid;
-  grid-template-columns: 56px 1fr auto;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0.2rem;
-}
-
-.upm-solutions .num {
-  color: rgba(255, 255, 255, 0.38);
-  font-family: "Syne", "Segoe UI", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.upm-solutions .txt {
-  font-family: "Syne", "Segoe UI", sans-serif;
-  font-size: clamp(1.2rem, 2.6vw, 2.25rem);
-  line-height: 1;
-  letter-spacing: -0.015em;
-}
-
-.upm-solutions .arr {
-  color: rgba(255, 255, 255, 0.68);
-  font-size: 1.25rem;
-  transform: translateX(0);
-  transition: transform 0.2s ease;
-}
-
-.upm-solutions a:hover .arr {
-  transform: translateX(4px);
-  color: #fff;
-}
-
 .upm-logos {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1583,30 +1537,6 @@ body:not(.js-enabled) .upm-logos img {
   color: rgba(255, 255, 255, 0.84);
 }
 
-.upm-sponsor-note {
-  margin-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.upm-sponsor-note p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
-  max-width: 66ch;
-}
-
-.upm-sponsor-note img {
-  width: min(250px, 42vw);
-  height: auto;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 10px;
-  background: #fff;
-}
-
 .upm-support-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1661,11 +1591,23 @@ body:not(.js-enabled) .upm-logos img {
   padding: 0.95rem 0.2rem;
 }
 
-.upm-contact-list .num {
-  color: rgba(255, 255, 255, 0.36);
-  font-family: "Syne", "Segoe UI", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
+.upm-contact-list .thumb {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.upm-contact-list .thumb img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  opacity: 0.96;
 }
 
 .upm-contact-list .txt {
@@ -1692,52 +1634,11 @@ body:not(.js-enabled) .upm-logos img {
   gap: 0.9rem;
 }
 
-.upm-map-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.9rem;
-  flex-wrap: wrap;
-}
-
-.upm-map-meta p {
-  margin: 0;
-  font-family: "Syne", "Segoe UI", sans-serif;
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.upm-map-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: rgba(255, 255, 255, 0.86);
-  text-decoration: none;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.24);
-  transition: color 180ms ease, border-color 180ms ease;
-}
-
-.upm-map-link:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.56);
-}
-
 .upm-map-wrap {
   margin-top: 0;
   border: 1px solid rgba(255, 255, 255, 0.16);
   min-height: 360px;
   background: rgba(255, 255, 255, 0.03);
-}
-
-.upm-map-wrap iframe {
-  width: 100%;
-  min-height: 360px;
-  border: 0;
-  filter: saturate(0.9) contrast(1.05) brightness(0.95);
 }
 
 .upm-map-privacy {
@@ -2197,18 +2098,11 @@ body:not(.js-enabled) .upm-tile-small {
     white-space: nowrap;
   }
 
-  .upm-solutions .txt,
   .upm-contact-list .txt,
   .upm-board-accordion .txt,
   .upm-faq summary,
   .upm-statutes summary {
     font-size: clamp(1rem, 5.2vw, 1.32rem);
-  }
-
-  .upm-solutions a {
-    grid-template-columns: 40px 1fr auto;
-    gap: 0.7rem;
-    padding: 0.9rem 0.1rem;
   }
 
   .upm-contact-list a {
@@ -2217,7 +2111,6 @@ body:not(.js-enabled) .upm-tile-small {
     padding: 0.88rem 0.1rem;
   }
 
-  .upm-solutions .txt,
   .upm-contact-list .txt {
     overflow-wrap: anywhere;
   }
@@ -2247,21 +2140,11 @@ body:not(.js-enabled) .upm-tile-small {
     gap: 0.8rem;
   }
 
-  .upm-sponsor-note {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .upm-sponsor-note img {
-    width: min(230px, 72vw);
-  }
-
   .upm-map {
     gap: 0.72rem;
   }
 
-  .upm-map-wrap,
-  .upm-map-wrap iframe {
+  .upm-map-wrap {
     min-height: 300px;
   }
 
@@ -2270,10 +2153,6 @@ body:not(.js-enabled) .upm-tile-small {
     padding: 1rem;
   }
 
-  .upm-map-link {
-    letter-spacing: 0.11em;
-    font-size: 0.78rem;
-  }
 
   .upm-collage {
     margin-top: 0.45rem;
@@ -2363,18 +2242,11 @@ body:not(.js-enabled) .upm-tile-small {
     max-width: 100%;
   }
 
-  .upm-map-meta p {
-    font-size: 0.92rem;
-  }
 }
 
 @media (hover: none) {
   .upm-btn:hover {
     transform: none;
-  }
-
-  .upm-solutions a:hover .arr {
-    transform: translateX(0);
   }
 }
 
