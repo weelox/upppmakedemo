@@ -181,16 +181,6 @@ if (shouldRunBgFx) {
     let cols = 0;
     let rows = 0;
     let last = performance.now();
-    let pointerLastMove = 0;
-
-    const pointer = {
-      x: 0,
-      y: 0,
-      tx: 0,
-      ty: 0,
-      power: 0,
-      targetPower: 0,
-    };
 
     const phaseA = Math.random() * Math.PI * 2;
     const phaseB = Math.random() * Math.PI * 2;
@@ -279,11 +269,6 @@ if (shouldRunBgFx) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-
-      pointer.x = width * 0.5;
-      pointer.y = height * 0.5;
-      pointer.tx = pointer.x;
-      pointer.ty = pointer.y;
     };
 
     const fieldBase = (x, y, t) => {
@@ -324,29 +309,6 @@ if (shouldRunBgFx) {
       return clamp(density, 0, 1);
     };
 
-    const updatePointer = (clientX, clientY, now) => {
-      pointer.tx = clamp(clientX, 0, width);
-      pointer.ty = clamp(clientY, 0, height);
-      pointer.targetPower = 0.84;
-      pointerLastMove = now;
-    };
-
-    window.addEventListener(
-      "pointermove",
-      (event) => {
-        updatePointer(event.clientX, event.clientY, performance.now());
-      },
-      { passive: true }
-    );
-    window.addEventListener(
-      "touchmove",
-      (event) => {
-        if (!event.touches || !event.touches[0]) return;
-        updatePointer(event.touches[0].clientX, event.touches[0].clientY, performance.now());
-      },
-      { passive: true }
-    );
-
     const tick = (now) => {
       const dt = Math.max(0.5, Math.min(2.2, (now - last) / 16.67));
       last = now;
@@ -356,13 +318,6 @@ if (shouldRunBgFx) {
       ctx.clearRect(0, 0, width, height);
       ctx.fillStyle = "rgba(4, 8, 12, 0.1)";
       ctx.fillRect(0, 0, width, height);
-
-      if (now - pointerLastMove > 1400) {
-        pointer.targetPower = 0;
-      }
-      pointer.x += (pointer.tx - pointer.x) * 0.058;
-      pointer.y += (pointer.ty - pointer.y) * 0.058;
-      pointer.power += (pointer.targetPower - pointer.power) * 0.028;
 
       for (const cloud of clouds) {
         cloud.x += (cloud.vx + Math.sin(t * 0.46 + cloud.seed) * 0.012) * dt;
@@ -379,24 +334,6 @@ if (shouldRunBgFx) {
         const angle = flowAngle(nx, ny, t);
         particle.vx += Math.cos(angle) * 0.029 * dt;
         particle.vy += Math.sin(angle) * 0.029 * dt;
-
-        const pointerRadius = Math.min(width, height) * 0.34;
-        if (pointer.power > 0.01) {
-          const dx = particle.x - pointer.x;
-          const dy = particle.y - pointer.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < pointerRadius) {
-            const inv = 1 / Math.max(1, dist);
-            const falloffRaw = 1 - dist / pointerRadius;
-            const falloff = falloffRaw * falloffRaw;
-            const swirlX = -dy * inv;
-            const swirlY = dx * inv;
-            particle.vx += swirlX * falloff * pointer.power * 0.42 * dt;
-            particle.vy += swirlY * falloff * pointer.power * 0.42 * dt;
-            particle.vx += dx * inv * falloff * pointer.power * -0.045 * dt;
-            particle.vy += dy * inv * falloff * pointer.power * -0.045 * dt;
-          }
-        }
 
         const edge = 70;
         if (particle.x < edge) particle.vx += (edge - particle.x) * 0.0012 * dt;
