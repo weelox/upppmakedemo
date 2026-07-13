@@ -40,18 +40,21 @@
         <video class="upm-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
           <source src="VIDEOS/0001-0192.mp4" type="video/mp4" />
         </video>
-        <img
-          class="upm-video-fallback no-js-fallback-media"
-          src="assets/images/location/working-together.jpg"
-          alt="UppMAKE medlemmar arbetar tillsammans i verkstaden"
-          loading="eager"
-        />
+        <picture class="upm-video-fallback no-js-fallback-media">
+          <source srcset="assets/images/location/working-together.webp" type="image/webp" />
+          <img
+            src="assets/images/location/working-together.jpg"
+            alt="UppMAKE medlemmar arbetar tillsammans i verkstaden"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
         <div class="upm-overlay" aria-hidden="true"></div>
 
         <div class="container upm-inner reveal visible">
           <p class="upm-kicker upm-kicker-hero">Stöd UppMAKE</p>
           <div class="upm-logo-wrap" data-inline-svg="Evolving sweden UppMAEKE.svg">
-            <img class="upm-logo" src="Evolving sweden UppMAEKE.svg" alt="UppMAKE" />
+            <img class="upm-logo" src="Evolving%20sweden%20UppMAEKE.svg" alt="UppMAKE" />
           </div>
           <h1 class="upm-hero-title">Sponsra verksamheten</h1>
           <p class="upm-hero-lead">
@@ -70,7 +73,10 @@
             <article class="upm-support-card">
               <h3>Swish</h3>
               <p>Stöd föreningen direkt via Swish.</p>
-              <img src="assets/images/misc/swish-small.png" alt="Swish-information för stöd till UppMAKE" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/misc/swish-small.webp" type="image/webp" />
+                <img src="assets/images/misc/swish-small.png" alt="Swish-information för stöd till UppMAKE" loading="lazy" decoding="async" />
+              </picture>
             </article>
 
             <article class="upm-support-card">

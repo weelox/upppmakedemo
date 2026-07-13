@@ -1022,6 +1022,12 @@ a {
   filter: grayscale(1) contrast(1.06) brightness(0.76);
 }
 
+.upm-video-fallback img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .no-js-fallback-media {
   display: block;
 }
@@ -1391,6 +1397,10 @@ body:not(.js-enabled) .upm-tile video {
   text-align: center;
   gap: 0.6rem;
   padding: 0.25rem 0.15rem;
+}
+
+.upm-logos picture {
+  display: contents;
 }
 
 .upm-logos img {
@@ -1771,12 +1781,17 @@ body:not(.js-enabled) .upm-tile-small {
   grid-row: auto !important;
 }
 
+.upm-tile picture,
 .upm-tile img,
 .upm-tile video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+}
+
+.upm-tile img,
+.upm-tile video {
+  object-fit: cover;
 }
 
 .upm-tile video {

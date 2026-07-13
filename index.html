@@ -42,17 +42,20 @@
         <video class="upm-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
           <source src="VIDEOS/0001-0192.mp4" type="video/mp4" />
         </video>
-        <img
-          class="upm-video-fallback no-js-fallback-media"
-          src="assets/images/location/working-together.jpg"
-          alt="UppMAKE medlemmar arbetar tillsammans i verkstaden"
-          loading="eager"
-        />
+        <picture class="upm-video-fallback no-js-fallback-media">
+          <source srcset="assets/images/location/working-together.webp" type="image/webp" />
+          <img
+            src="assets/images/location/working-together.jpg"
+            alt="UppMAKE medlemmar arbetar tillsammans i verkstaden"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
         <div class="upm-overlay" aria-hidden="true"></div>
 
         <div class="container upm-inner reveal visible">
           <div class="upm-logo-wrap" data-inline-svg="Evolving sweden UppMAEKE.svg">
-            <img class="upm-logo" src="Evolving sweden UppMAEKE.svg" alt="UppMAKE" />
+            <img class="upm-logo" src="Evolving%20sweden%20UppMAEKE.svg" alt="UppMAKE" />
           </div>
           <h1 class="upm-hero-title">Gör det du inte kan sluta tänka på!</h1>
           <p class="upm-hero-lead">
@@ -65,58 +68,103 @@
         <div class="upm-collage" aria-label="Bild- och videoflöde från UppMAKE">
           <div class="upm-collage-grid">
             <figure class="upm-tile upm-tile-full upm-tile-panorama" data-title="Working together">
-              <img src="assets/images/location/working-together.jpg" alt="Medlemmar som bygger tillsammans i verkstaden" loading="eager" />
+              <picture>
+                <source srcset="assets/images/location/working-together.webp" type="image/webp" />
+                <img src="assets/images/location/working-together.jpg" alt="Medlemmar som bygger tillsammans i verkstaden" loading="eager" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-wide" data-title="Metalbender">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Kort klipp från aktivitet i makerspacet">
-                <source src="assets/images/location/metalbender.mp4" type="video/mp4" />
+              <video data-lazy-video autoplay muted loop playsinline preload="none" poster="assets/images/location/Metalbending.webp" aria-label="Kort klipp från aktivitet i makerspacet">
+                <source data-src="assets/images/location/metalbender.mp4" type="video/mp4" />
               </video>
-              <img class="no-js-fallback-media" src="assets/images/location/Metalbending.jpg" alt="Metallbearbetning i verkstaden" loading="lazy" />
+              <picture class="no-js-fallback-media">
+                <source srcset="assets/images/location/Metalbending.webp" type="image/webp" />
+                <img src="assets/images/location/Metalbending.jpg" alt="Metallbearbetning i verkstaden" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-wide upm-tile-woodworking" data-title="Woodworking">
-              <img src="assets/images/location/woodworking.jpg" alt="Närbild av arbete med verktyg och material" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/woodworking.webp" type="image/webp" />
+                <img src="assets/images/location/woodworking.jpg" alt="Närbild av arbete med verktyg och material" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-large" data-title="CNC machine">
-              <img src="assets/images/location/cnc-machine.jpg" alt="Maskiner och verktyg i UppMAKEs lokal" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/cnc-machine.webp" type="image/webp" />
+                <img src="assets/images/location/cnc-machine.jpg" alt="Maskiner och verktyg i UppMAKEs lokal" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-wide upm-tile-cad" data-title="CAD">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Detaljklipp av arbete i verkstaden">
-                <source src="assets/images/location/cad.mp4" type="video/mp4" />
+              <video data-lazy-video autoplay muted loop playsinline preload="none" poster="assets/images/location/cad.webp" aria-label="Detaljklipp av arbete i verkstaden">
+                <source data-src="assets/images/location/cad.mp4" type="video/mp4" />
               </video>
-              <img class="no-js-fallback-media" src="assets/images/location/cad.jpg" alt="CAD-arbete och digital konstruktion" loading="lazy" />
+              <picture class="no-js-fallback-media">
+                <source srcset="assets/images/location/cad.webp" type="image/webp" />
+                <img src="assets/images/location/cad.jpg" alt="CAD-arbete och digital konstruktion" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-large" data-title="Happy members">
-              <img src="assets/images/location/happy-members.jpg" alt="Deltagare som visar färdiga projekt" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/happy-members.webp" type="image/webp" />
+                <img src="assets/images/location/happy-members.jpg" alt="Deltagare som visar färdiga projekt" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-full upm-tile-sewing" data-title="Sewing machine repair">
-              <img src="assets/images/location/repairing Sewingmachine.jpg" alt="Reparation av symaskin i verkstaden" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/repairing%20Sewingmachine.webp" type="image/webp" />
+                <img src="assets/images/location/repairing%20Sewingmachine.jpg" alt="Reparation av symaskin i verkstaden" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-wide" data-title="Embroidery">
-              <img src="assets/images/location/embroidery.jpg" alt="Textilt skapande och broderi i verkstaden" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/embroidery.webp" type="image/webp" />
+                <img src="assets/images/location/embroidery.jpg" alt="Textilt skapande och broderi i verkstaden" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-medium" data-title="Member makerspace">
-              <img src="assets/images/location/member-makerspace.jpg" alt="Gemensam aktivitet med medlemmar i UppMAKE" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/member-makerspace.webp" type="image/webp" />
+                <img src="assets/images/location/member-makerspace.jpg" alt="Gemensam aktivitet med medlemmar i UppMAKE" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-medium" data-title="Crafting">
-              <img src="assets/images/location/crafting.jpg" alt="Kreativt hantverk och prototypbygge i lokalen" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/crafting.webp" type="image/webp" />
+                <img src="assets/images/location/crafting.jpg" alt="Kreativt hantverk och prototypbygge i lokalen" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-medium" data-title="Member meets">
-              <img src="assets/images/location/member meets.jpg" alt="Medlemmar som möts och utvecklar projekt tillsammans" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/member%20meets.webp" type="image/webp" />
+                <img src="assets/images/location/member%20meets.jpg" alt="Medlemmar som möts och utvecklar projekt tillsammans" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-portrait" data-title="Prototype build">
-              <img src="assets/images/location/prototype-build.jpg" alt="Teknikprojekt under arbete på arbetsbänk" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/prototype-build.webp" type="image/webp" />
+                <img src="assets/images/location/prototype-build.jpg" alt="Teknikprojekt under arbete på arbetsbänk" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-wide upm-tile-laser-feature" data-title="Laser engrave">
-              <video autoplay muted loop playsinline preload="metadata" aria-label="Maskiner i drift i makerspacet">
-                <source src="assets/images/location/laser-engrave.mp4" type="video/mp4" />
+              <video data-lazy-video autoplay muted loop playsinline preload="none" poster="assets/images/location/lasercut%20earring.webp" aria-label="Maskiner i drift i makerspacet">
+                <source data-src="assets/images/location/laser-engrave.mp4" type="video/mp4" />
               </video>
-              <img class="no-js-fallback-media" src="assets/images/location/lasercut earring.jpg" alt="Lasergraverad detalj i verkstaden" loading="lazy" />
+              <picture class="no-js-fallback-media">
+                <source srcset="assets/images/location/lasercut%20earring.webp" type="image/webp" />
+                <img src="assets/images/location/lasercut%20earring.jpg" alt="Lasergraverad detalj i verkstaden" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-medium" data-title="Makerspace">
-              <img src="assets/images/location/makerspace.jpg" alt="Verkstadsmiljö med utrustning för prototyper" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/makerspace.webp" type="image/webp" />
+                <img src="assets/images/location/makerspace.jpg" alt="Verkstadsmiljö med utrustning för prototyper" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="upm-tile upm-tile-medium" data-title="Cosplay print">
-              <img src="assets/images/location/cosplay print.jpg" alt="Detaljerad 3D-print och kreativt skapande i verkstaden" loading="lazy" />
+              <picture>
+                <source srcset="assets/images/location/cosplay%20print.webp" type="image/webp" />
+                <img src="assets/images/location/cosplay%20print.jpg" alt="Detaljerad 3D-print och kreativt skapande i verkstaden" loading="lazy" decoding="async" />
+              </picture>
             </figure>
           </div>
         </div>
@@ -141,7 +189,6 @@
             <h3>Samarbetspartners & sponsorer</h3>
           </div>
           <div class="upm-logos upm-logos-partners">
-            <!-- Ny partner: kopiera en <figure>...</figure> och uppdatera bild + namn -->
             <figure class="logo-orebro-kommun">
               <img src="assets/images/partners/orebro-kommun-final.svg" alt="Örebro kommun" />
             </figure>
@@ -149,10 +196,16 @@
               <img src="assets/images/partners/region-orebro-lan-final.svg" alt="Region Örebro län" />
             </figure>
             <figure class="logo-orebro-tech">
-              <img src="assets/images/partners/orebro-tech-final.png" alt="Örebro Tech" />
+              <picture>
+                <source srcset="assets/images/partners/orebro-tech-final.webp" type="image/webp" />
+                <img src="assets/images/partners/orebro-tech-final.png" alt="Örebro Tech" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="logo-makers-sweden">
-              <img src="assets/images/partners/makers-of-sweden-final.png" alt="Makers of Sweden" />
+              <picture>
+                <source srcset="assets/images/partners/makers-of-sweden-final.webp" type="image/webp" />
+                <img src="assets/images/partners/makers-of-sweden-final.png" alt="Makers of Sweden" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="logo-white">
               <img src="assets/images/partners/white.svg" alt="White" />
@@ -161,13 +214,19 @@
               <img src="assets/images/partners/handelskammaren-malardalen.svg" alt="Handelskammaren Mälardalen" />
             </figure>
             <figure class="logo-catosaurus">
-              <img src="assets/images/sponsors/catosaurus-final.png" alt="Catosaurus" />
+              <picture>
+                <source srcset="assets/images/sponsors/catosaurus-final.webp" type="image/webp" />
+                <img src="assets/images/sponsors/catosaurus-final.png" alt="Catosaurus" loading="lazy" decoding="async" />
+              </picture>
             </figure>
             <figure class="logo-powerminds">
               <img src="assets/images/sponsors/powerminds-final.svg" alt="PowerMinds" />
             </figure>
             <figure class="logo-yubico">
-              <img src="assets/images/sponsors/yubico-final.png" alt="Yubico" />
+              <picture>
+                <source srcset="assets/images/sponsors/yubico-final.webp" type="image/webp" />
+                <img src="assets/images/sponsors/yubico-final.png" alt="Yubico" loading="lazy" decoding="async" />
+              </picture>
             </figure>
           </div>
         </div>
@@ -259,7 +318,10 @@
                 <span class="txt">Ordförande — Adrian Hällzon</span>
               </summary>
               <div class="upm-board-content">
-                <img class="upm-board-photo" src="assets/images/board/Adrian_Hallzon.png" alt="Adrian Hällzon" />
+                <picture>
+                  <source srcset="assets/images/board/Adrian_Hallzon.webp" type="image/webp" />
+                  <img class="upm-board-photo" src="assets/images/board/Adrian_Hallzon.png" alt="Adrian Hällzon" loading="lazy" decoding="async" />
+                </picture>
                 <div>
                   <p>
                     Drivs av samhällsutveckling inom innovation och teknik. Nyckelperson i utveckling av innovativa miljöer

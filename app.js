@@ -131,6 +131,42 @@ if ("IntersectionObserver" in window) {
   revealItems.forEach((item) => item.classList.add("visible"));
 }
 
+const lazyVideos = document.querySelectorAll("video[data-lazy-video]");
+const loadLazyVideo = (video) => {
+  if (video.dataset.loaded === "true") return;
+  video.querySelectorAll("source[data-src]").forEach((source) => {
+    source.src = source.dataset.src;
+    source.removeAttribute("data-src");
+  });
+  video.dataset.loaded = "true";
+  video.load();
+  if (video.autoplay) {
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  }
+};
+
+if (lazyVideos.length) {
+  if ("IntersectionObserver" in window) {
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          loadLazyVideo(entry.target);
+          videoObserver.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "420px 0px", threshold: 0.01 }
+    );
+
+    lazyVideos.forEach((video) => videoObserver.observe(video));
+  } else {
+    lazyVideos.forEach(loadLazyVideo);
+  }
+}
+
 const inlineLogoWrap = document.querySelector("[data-inline-svg]");
 if (inlineLogoWrap) {
   const triggerWrapGlitch = () => {
